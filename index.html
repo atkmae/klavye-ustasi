@@ -60,6 +60,7 @@ h1{margin:0;font-size:26px}
 @media (prefers-reduced-motion:reduce){#target.pop{animation:none}}
 #target{font-size:clamp(44px,12vw,88px);font-weight:700;letter-spacing:.06em;min-height:1.3em;overflow-wrap:anywhere;margin:6px 0}
 #target .d{color:var(--ok)}#target .n{border-bottom:5px solid var(--acc)}
+#target.long{font-size:clamp(26px,5.4vw,46px);letter-spacing:.02em;overflow-wrap:normal;line-height:1.5}
 #target.msg{font-size:clamp(24px,6vw,38px);letter-spacing:0;line-height:1.3;overflow-wrap:normal;padding:14px 0}
 .sp{display:inline-block;width:.5em;height:.14em;border:2px solid currentColor;border-top:0;opacity:.5;margin:0 .12em}
 .cap{display:inline-flex;flex-direction:column;align-items:center;gap:4px;padding:12px 40px;border:2px solid var(--line);border-bottom-width:7px;border-radius:16px;background:var(--bg);letter-spacing:0}
@@ -191,10 +192,13 @@ var SPN=T("§Silme §Silme §Silme §Delete §Delete §Delete §Boşluk §Boşlu
 var SPZ=SPN.concat(T("§PgUp §PgDn §Insert"));
 var EXN=["Evet!","Neden?","%25","a_b","{x}","10 TL","3*4=12","A&B","Ali'nin","5/2","(1+2)","[ok]","a@b","Işık!","#1","50 lira"];
 var EXZ=["50-10=40","(3+4)*2","a@b.com","100-25=75","[1] [2]","5/2=2,5","C:\\Pardus","12/04/2026","%50 indirim","x=(a+b)/2","Iğdır'ın ılık yazı","ad_soyad@okul.tr","{a:1, b:2}","15,50 €","İzmir'e #1","Ne? Evet!"];
-function mk(n,t,g,s){return{n:n,t:t,g:g,s:s}}
+/* Büyük final: bölüm sonu canavarı. Uzun yazılar, daha uzun süre, 2 kat puan */
+var FN=["Ali'nin notu 100!", "(2*3)+61=?", "Işık %50 indirimli", "Saat 09:45'te gel.", "Çağrı & Ömer", "5+5=10, değil mi?", "İzmir'e 3 gün kaldı", "Ödev: sayfa 42-43", "Kalem 15 TL", "Doğru mu? Evet!", "Not: 85/100", "Ilık çay (2 bardak)", "Iğdır ve Isparta", "Göl, dağ, ağaç...", "Şu an saat 10:15", "a@b.com yaz!"];
+var FZ=["Ali'nin notu 100, Ayşe'nin 95!", "(2*3)+61=? Cevap: 67", "ogretmen@okul.k12.tr adresine yaz", "Fiyat: 15,50 € + %20 KDV", "C:\\Belgeler\\Ödev_5.txt", "[Işık] {Iğdır} | İzmir #1", "Şifre: Çğ_57!? değil $", "x=(a+b)*2; y=x/4", "Saat 14:30'da Ilgaz'a gidiyoruz.", "#KodlamaHaftası 2026 @okul", "Soru 3: (12-4)/2 = ?", "Öğle arası ~45 dk sürer.", "%100 doğru = 3 yıldız"];
+function mk(n,t,g,s,f){return{n:n,t:t,g:g,s:s,f:f||1}}
 var LVS={
-normal:[mk("Rakamlar",DIG,6,25),mk("Harfler",LET,8,35),mk("Shift simgeleri",SHF,6,35),mk("AltGr simgeleri",AGR,4,35),mk("Özel tuşlar",SPN,8,40),mk("Kısa yazılar",EXN,3,45),mk("Büyük final",[].concat(DIG,LET,SHF,AGR,SPN),8,40)],
-zor:[mk("Rakamlar",DIG,10,20),mk("Kelimeler",WRD,8,40),mk("Shift simgeleri",SHF,10,30),mk("AltGr simgeleri",AGR,8,30),mk("Özel tuşlar",SPZ,12,35),mk("Uzun yazılar",EXZ,4,50),mk("Büyük final",[].concat(DIG,WRD,SHF,AGR,SPZ,EXN),10,40)]};
+normal:[mk("Rakamlar",DIG,6,25),mk("Harfler",LET,8,35),mk("Shift simgeleri",SHF,6,35),mk("AltGr simgeleri",AGR,6,35),mk("Özel tuşlar",SPN,8,40),mk("Kısa yazılar",EXN,4,45),mk("Büyük final",FN,4,75,2)],
+zor:[mk("Rakamlar",DIG,10,20),mk("Kelimeler",WRD,8,40),mk("Shift simgeleri",SHF,10,30),mk("AltGr simgeleri",AGR,8,30),mk("Özel tuşlar",SPZ,12,35),mk("Uzun yazılar",EXZ,5,50),mk("Büyük final",FZ,5,80,2)]};
 var MOD=T("Shift AltGraph Alt Control CapsLock Dead Meta OS Process Unidentified");
 var SPK=Object.keys(SP).map(function(x){return SP[x].k});
 var DK={"^":"Digit3","~":"BracketRight"},dSkip=0;
@@ -216,7 +220,7 @@ if(i===cur){e.className="pg on";var b=document.createElement("b"),t=document.cre
 else if(r){e.className="pg "+(r.s?"ok":"to");e.textContent=r.s?"✓":"⏰";e.title=(i+1)+". "+l.n+(r.s?" tamamlandı":" süre bitti")}
 else{e.className="pg nx";e.textContent=i+1;e.title=(i+1)+". "+l.n}
 w.appendChild(e)})}
-function upd(){var t=hit+miss;$("time").textContent=tl;$("score").textContent=score;$("acc").textContent=t?"%"+Math.round(hit/t*100):"–";$("miss").textContent=miss+" hatalı";$("combo").textContent=combo>=10?"🔥 Seri x"+Math.min(5,1+((combo/10)|0)):"";$("info").textContent=phase==="play"?LV[li].n+" · "+done+"/"+LV[li].g+" tamam":"";$("best").textContent=P.b}
+function upd(){var t=hit+miss;$("time").textContent=tl;$("score").textContent=score;$("acc").textContent=t?"%"+Math.round(hit/t*100):"–";$("miss").textContent=miss+" hatalı";$("combo").textContent=combo>=10?"🔥 Seri x"+Math.min(5,1+((combo/10)|0)):"";$("info").textContent=phase==="play"?LV[li].n+(LV[li].f>1?" 👾 · puanlar 2 kat":"")+" · "+done+"/"+LV[li].g+" tamam":"";$("best").textContent=P.b}
 function bar(){var f=$("fill"),p=LV[li].s*1000;f.style.width=Math.max(0,rem/p*100)+"%";var low=run&&rem<5000;f.className=low?"low":"";$("tmc").className="stat tm"+(low?" low":"")}
 
 /* Süre: akıcı çubuk; pencere açılınca durur */
@@ -226,8 +230,9 @@ function stopTimer(){if(raf){cancelAnimationFrame(raf);raf=0;rem=Math.max(0,dl-p
 
 function ready(){phase="ready";li=0;score=hit=miss=combo=done=0;res=[];rem=LV[0].s*1000;tl=LV[0].s;mkLevels();upd();bar();$("sum").innerHTML="";show("bar",false);show("rkend",false);
 msg("Hazır mısın?",LV.length+" seviye var; süre biterse sonraki seviyeye geçersin.");show("bdiff",true);$("gs").textContent="▶ Başla (Enter)";show("stt",false);show("lvc",false);show("go",false);show("chg2",false)}
-function draw(){var el=$("target");if(sp){el.innerHTML='<div class="cap"><b>'+(sp.i||'<span class="sp"></span>')+'</b><span>'+sp.l+'</span></div>';return}var s="";for(var i=0;i<tok.length;i++){var ch=tok[i],c=ch===" "?'<span class="sp"></span>':ch.replace(/&/g,"&amp;").replace(/</g,"&lt;");s+='<span class="'+(i<pos?"d":i===pos?"n":"")+'">'+c+"</span>"}el.innerHTML=s}
-function next(){var p=LV[li].t,t;if(capsOn&&p.indexOf("§Caps")>-1)t="§Caps";else do{t=p[Math.floor(Math.random()*p.length)]}while(t===tok&&p.length>1);tok=t;sp=SP[t]||null;pos=0;draw();var tg=$("target");tg.classList.remove("pop");void tg.offsetWidth;tg.classList.add("pop");$("hint").textContent=hintFor(t)}
+function draw(){var el=$("target");if(sp){el.innerHTML='<div class="cap"><b>'+(sp.i||'<span class="sp"></span>')+'</b><span>'+sp.l+'</span></div>';return}var s="";for(var i=0;i<tok.length;i++){var ch=tok[i],c=ch===" "?'<span class="sp"></span>':ch.replace(/&/g,"&amp;").replace(/</g,"&lt;");s+='<span class="'+(i<pos?"d":i===pos?"n":"")+'">'+c+"</span>"}el.innerHTML=s;el.classList.toggle("long",tok.length>12);if(tok.length>1)$("hint").textContent=chHint(tok[pos])}
+function chHint(c){if(c===" ")return"Sıradaki: Boşluk tuşu";var h=[];if(NM[c])h.push(NM[c]);if(HP[c])h.push(HP[c]);else if(/[A-ZÇĞİÖŞÜI]/.test(c))h.push("Shift + "+(c==="I"?"ı":c==="İ"?"i":c.toLocaleLowerCase("tr")));return h.length?"Sıradaki: "+h.join(" · "):""}
+function next(){var p=LV[li].t,t;if(capsOn&&p.indexOf("§Caps")>-1)t="§Caps";else do{t=p[Math.floor(Math.random()*p.length)]}while(t===tok&&p.length>1);tok=t;sp=SP[t]||null;pos=0;draw();var tg=$("target");tg.classList.remove("pop");void tg.offsetWidth;tg.classList.add("pop");if(t.length<2||SP[t])$("hint").textContent=hintFor(t)}
 function startLevel(){show("stt",true);show("lvc",true);if(document.activeElement)document.activeElement.blur();run=true;phase="play";done=0;m0=miss;h0=hit;rem=LV[li].s*1000;tl=LV[li].s;$("sum").innerHTML="";show("bar",true);show("rkend",false);show("bdiff",false);show("go",false);show("chg2",false);$("target").className="";tok="";next();mkLevels();upd();startTimer()}
 var cdT=0,cdN=0;function cdStop(){clearInterval(cdT);cdT=0}
 function cdStart(){cdStop();cdN=5;cdShow();cdT=setInterval(function(){if(modalOpen())return;cdN--;if(cdN<=0){cdStop();go();return}cdShow()},1000)}
@@ -257,8 +262,8 @@ if(!okk){if(MOD.indexOf(k)>-1)return;if(k.length>1&&SPK.indexOf(k)<0)return}
 if(e.ctrlKey&&!e.altKey&&!okk&&!(e.getModifierState&&e.getModifierState("AltGraph")))return;
 e.preventDefault();if(e.repeat)return;
 var st=$("stage");
-if(okk){hit++;combo++;score+=10*Math.min(5,1+((combo/10)|0));
-if(sp||pos+1>=tok.length){score+=sp?5:tok.length*2;done++;st.classList.remove("flash");void st.offsetWidth;st.classList.add("flash");if(done>=LV[li].g){upd();finish(true);return}next()}else{pos++;draw()}}
+if(okk){hit++;combo++;score+=10*Math.min(5,1+((combo/10)|0))*LV[li].f;
+if(sp||pos+1>=tok.length){score+=(sp?5:tok.length*2)*LV[li].f;done++;st.classList.remove("flash");void st.offsetWidth;st.classList.add("flash");if(done>=LV[li].g){upd();finish(true);return}next()}else{pos++;draw()}}
 else{miss++;combo=0;st.classList.remove("shake");void st.offsetWidth;st.classList.add("shake")}
 upd()});
 
