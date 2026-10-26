@@ -47,6 +47,22 @@ h1{margin:0;font-size:26px}
 .pg.on b{font-size:24px;line-height:1}.pg.on span{font-size:15px}
 @media (max-width:480px){.pg.on span{display:none}.pg{width:28px;height:28px;font-size:13px}}
 #stage{text-align:center;padding:16px 12px}
+/* Uzman mod: gece moru ortam */
+:root.uz{--bg:#f3f0fb;--card:#fff;--ink:#1e1b33;--mute:#6b6890;--acc:#7c3aed;--ok:#15803d;--bad:#e11d48;--line:#e2dcf3}
+@media (prefers-color-scheme:dark){:root.uz:not([data-theme="light"]){--bg:#0f0e1a;--card:#191729;--ink:#ecebf5;--mute:#9a97b5;--acc:#a78bfa;--ok:#4ade80;--bad:#fb7185;--line:#2c2944}}
+:root.uz[data-theme="dark"]{--bg:#0f0e1a;--card:#191729;--ink:#ecebf5;--mute:#9a97b5;--acc:#a78bfa;--ok:#4ade80;--bad:#fb7185;--line:#2c2944}
+:root.uz body{background:radial-gradient(ellipse at top,color-mix(in srgb,var(--acc) 16%,var(--bg)) 0%,var(--bg) 60%) fixed}
+:root.uz #stage{border-color:color-mix(in srgb,var(--acc) 35%,var(--line));box-shadow:0 0 0 4px color-mix(in srgb,var(--acc) 8%,transparent)}
+:root.uz #bar i{background:linear-gradient(90deg,color-mix(in srgb,var(--acc) 70%,#000),var(--acc))}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--acc);border:1px solid color-mix(in srgb,var(--acc) 40%,transparent);background:color-mix(in srgb,var(--acc) 12%,transparent);padding:4px 10px;border-radius:999px;margin-bottom:10px}
+#stage.uzon #target,#stage.uzon #hint,#stage.uzon #info,#stage.uzon #combo{display:none}
+#ubox{max-height:calc(1.75em * 5 + 4px);overflow:hidden;position:relative;margin:10px 0 4px;font-size:clamp(18px,2.6vw,25px)}
+.utx{text-align:left;white-space:pre-wrap;line-height:1.75;color:var(--mute);letter-spacing:.01em}
+.utx .u-ok{color:var(--ok)}.utx .u-er{color:var(--bad);text-decoration:underline dotted var(--bad);text-decoration-thickness:2px;text-underline-offset:5px}
+.utx .u-cur{color:var(--ink);background:color-mix(in srgb,var(--acc) 30%,transparent);border-radius:4px;box-shadow:inset 0 -3px 0 var(--acc)}
+#uh{color:var(--mute);font-size:13px;margin-top:6px}
+.links{margin-top:6px;font-size:13px;color:var(--mute)}.lnk2{border:0;background:none;color:var(--mute);font-size:13px;cursor:pointer;padding:2px 0;text-decoration:underline;text-underline-offset:3px}.lnk2:hover{color:var(--acc)}
+.box.wide{width:min(560px,100%)}.box h3{font-size:15px;margin:16px 0 6px}.box p,.box li{font-size:14px;line-height:1.55}.box ul,.box ol{padding-left:20px;margin:6px 0}
 #info{color:var(--mute);font-size:14px}
 #bar{height:10px;background:var(--line);border-radius:6px;overflow:hidden;margin:8px auto 4px;max-width:520px}
 #bar i{display:block;height:100%;width:100%;background:var(--acc)}
@@ -79,12 +95,13 @@ h1{margin:0;font-size:26px}
 .start.off{background:var(--card);color:var(--ink)}
 .start small{display:block;font-size:12px;font-weight:400;color:inherit;opacity:.85;line-height:1.3}
 small{color:var(--mute);line-height:1.5;display:block}
-#modal,#rk{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:12px;z-index:9}
+#modal,#rk,#hp,#ab{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:12px;z-index:9}
 .box{background:var(--card);border-radius:18px;padding:22px;width:min(460px,100%);max-height:100%;overflow-y:auto;position:relative}
 .box h2{margin:0 0 4px}.box label,.lb{display:block;margin:12px 0 6px;color:var(--mute);font-size:14px}
 .box select{width:100%;font-size:17px;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
 .lnk{border:0;background:none;color:var(--acc);font-size:12px;text-decoration:underline;cursor:pointer;padding:0 0 0 6px}
 .box input{width:100%;font-size:18px;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.cx{position:absolute;top:10px;right:10px;font-size:18px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
 #x,#rx{position:absolute;top:10px;right:10px;font-size:18px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
 .grid{display:grid;gap:6px}#gr{grid-template-columns:repeat(4,1fr)}#sb{grid-template-columns:repeat(7,1fr)}
 .c2{font-size:16px;padding:8px 0;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
@@ -107,6 +124,8 @@ small{color:var(--mute);line-height:1.5;display:block}
 <body>
 <main>
 <div class="top"><h1>⌨️ Klavye Ustası</h1><div><button class="ib" id="rkb" title="Rekor listesi" aria-label="Rekor listesi">🏆</button><button class="ib" id="chg" title="Kişi değiştir" aria-label="Kişi değiştir" hidden><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="7" cy="6.5" r="3" fill="currentColor"/><path d="M2 15.5a5 5 0 0 1 10 0z" fill="currentColor"/><circle cx="17" cy="12.5" r="3" fill="currentColor"/><path d="M12 21.5a5 5 0 0 1 10 0z" fill="currentColor"/><g fill="none" stroke="var(--acc)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 3.5c3.2-.4 6 1 7.3 3.8"/><path d="M20.4 4.6l-.5 2.9-2.8-.8"/><path d="M11.5 20.5c-3.2.4-6-1-7.3-3.8"/><path d="M3.6 19.4l.5-2.9 2.8.8"/></g></svg></button><i class="vd" id="vd" hidden></i><div class="um"><button class="ub" id="whob" aria-label="Kullanıcı menüsü" aria-haspopup="true" hidden><span id="who"></span><svg class="cv" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6l4.5 4.5L12.5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div id="um" hidden><button id="out">🚪 Çıkış (kişi değiştir)</button><button id="del">🗑️ Verilerimi sil</button></div></div></div></div>
+<div class="badge" id="ubd" hidden>🎯 UZMAN MOD · geri silme yok</div>
+<div class="stats" id="ust" hidden><div class="stat tm"><b id="ut">60</b><span>saniye kaldı</span><em></em></div><div class="stat"><b id="uv">0</b><span>vuruş / dakika</span><em></em></div><div class="stat"><b id="ua">–</b><span>doğruluk</span><em></em></div><div class="stat"><b id="ue" style="color:var(--bad)">0</b><span>hata</span><em></em></div></div>
 <div class="stats" id="stt">
 <div class="stat tm" id="tmc"><b id="time">0</b><span>saniye kaldı</span><em></em></div>
 <div class="stat"><b id="score">0</b><span>toplam puan</span><em></em></div>
@@ -120,13 +139,14 @@ small{color:var(--mute);line-height:1.5;display:block}
 <div id="combo"></div>
 <div id="touch" hidden>📱 Bu oyun gerçek bir klavyeyle oynanır. Tablete klavye takabilir ya da bilgisayardan açabilirsin.</div>
 <div id="caps" hidden>⚠️ Caps Lock açık! Kapatmak için Caps Lock tuşuna bas.</div>
-<div id="target"></div><div id="hint"></div><button class="start alt" id="skip" hidden style="margin-top:6px;font-size:13px;padding:6px 14px">⏭ Pas</button>
-<div id="bdiff"><div class="opts" role="radiogroup" aria-label="Zorluk"><button class="opt" id="goN" role="radio">Normal<small>klavyeyi yeni tanıyanlar</small></button><button class="opt" id="goZ" role="radio">🔥 Zor<small>daha çok tuş, kelimeler</small></button></div><div class="btns"><button class="start" id="gs">▶ Başla (Enter)</button></div></div>
+<div id="target"></div><div id="hint"></div><div id="ubox" hidden><div class="utx" id="utx"></div></div><div id="uh" hidden></div><button class="start alt" id="skip" hidden style="margin-top:6px;font-size:13px;padding:6px 14px">⏭ Pas</button>
+<div id="bdiff"><div class="opts" role="radiogroup" aria-label="Zorluk"><button class="opt" id="goN" role="radio">Normal<small>klavyeyi yeni tanıyanlar için</small></button><button class="opt" id="goZ" role="radio">🔥 Zor<small>daha fazla tuş ve zorlu kelimeler</small></button><button class="opt" id="goU" role="radio">🎯 Uzman<small>tek metin, hızlı ol, hatasız yaz</small></button></div><div class="btns"><button class="start" id="gs">▶ Başla (Enter)</button></div></div>
 <div class="btns"><button class="start" id="go" hidden></button><button class="start alt" id="chg2" hidden>👥 Kişi değiştir</button></div>
 <div id="rkend" hidden><div id="rkt"></div><ol class="rl sm2" id="rkl2"></ol></div>
 <div id="sum"></div>
 </div>
 <details class="tips"><summary>💡 İpuçları</summary><ul><li>Büyük harf ve simgeler için <b>Shift</b> tuşunu basılı tut.</li><li>€ @ { } [ ] \ | # $ ~ için <b>AltGr</b> (boşluğun sağındaki Alt) tuşunu kullan.</li><li>Dizüstü bilgisayarlarda Home, End, Page Up, Page Down ve Insert tuşları <b>Fn</b> ile birlikte çalışabilir.</li><li>Tuş ipuçları Türkçe Q klavye içindir.</li></ul></details>
+<div class="links"><button class="lnk2" id="hpl">❓ Nasıl oynanır?</button> · <button class="lnk2" id="abl">ℹ️ Hakkında</button></div>
 </main>
 <div id="modal"><div class="box">
 <button id="x" title="Kapat">✕</button>
@@ -138,11 +158,21 @@ small{color:var(--mute);line-height:1.5;display:block}
 <button class="start alt" id="guest" style="width:100%;margin-top:14px">👤 Misafir olarak oyna</button><small style="text-align:center;font-size:12px;margin-top:4px">Aldığın puan rekor listesine kaydedilmez.</small>
 
 </div></div>
+<div id="hp" hidden><div class="box wide"><button class="cx" data-c="hp" title="Kapat">✕</button><h2>❓ Nasıl oynanır?</h2>
+<ol><li>Adını yaz ve <b>Tamam</b>'a bas. Rekor listesinde adın yerine sana özel bir takma ad görünür.</li><li>Modu seç, <b>Başla</b>'ya ya da <b>Enter</b>'a bas.</li><li>Ekranda gördüğün tuşa bas. Doğruysa yeşil olur ve sıradakine geçersin; yanlışsa ekran sallanır.</li></ol>
+<h3>Modlar</h3><ul><li><b>Normal</b>: 7 bölüm. Rakamlar, harfler, Shift ve AltGr simgeleri, özel tuşlar, kısa yazılar ve Büyük final. Hazır olunca sonraki bölüme sen geçersin.</li><li><b>🔥 Zor</b>: Yine 7 bölüm ama sayılar, kelimeler ve daha uzun yazılar var. Bölümler arasında 5 saniye sonra kendiliğinden geçilir.</li><li><b>🎯 Uzman</b>: Tek metin, 60 saniye. Süre ilk tuşa bastığında başlar. Yanlış harf kırmızı kalır; geri silme yoktur, yazmaya devam et.</li></ul>
+<h3>Puan</h3><ul><li><b>Normal ve Zor</b>: Her doğru tuş 10 puan × seri. Süresinde bitirdiğin her bölüm seriyi 0,5 artırır (en çok x3). Büyük finalde puanlar ayrıca 2 kat. Bölüm bitince kalan her saniye +5, hatasız bölüm +100 puan.</li><li><b>Yıldızlar</b>: %95 ve üstü doğruluk ⭐⭐⭐, %85 ve üstü ⭐⭐, süresinde biten her bölüm en az ⭐.</li><li><b>Uzman</b>: (doğru − 2 × hatalı) × 10. Metni bitirirsen kalan her saniye +20.</li></ul>
+<h3>Bilmen gerekenler</h3><ul><li>Bölümün süresi biterse oyun bitmez, sonraki bölüme geçersin.</li><li><b>⏭ Pas</b>: Klavyende bulamadığın tuşu (Home, End, Page Up, Page Down) geçer; puan vermez.</li><li>Rekor listesinde Normal, Zor ve Uzman ayrı sıralanır. Kendi satırında <b>(Sen)</b> yazar.</li><li>Misafir olarak oynarsan puanın listeye yazılmaz.</li><li>5 dakika dokunulmazsa oyun kendiliğinden çıkış yapar.</li></ul></div></div>
+<div id="ab" hidden><div class="box wide"><button class="cx" data-c="ab" title="Kapat">✕</button><h2>ℹ️ Hakkında</h2>
+<p><b>Klavye Ustası</b>, öğrencilerin klavyedeki tuşların yerini öğrenmesi, hızlı ve doğru yazma becerisini geliştirmesi için Bilişim Teknolojileri ve Yazılım öğretmeni <b>Tamer Mancar</b> tarafından hazırlandı.</p>
+<p>Oyun, yapay zekâ desteğiyle (Claude, Anthropic) geliştirildi. Uzman mod metinleri, Türkiye Yüzyılı Maarif Modeli'nin erdem-değer-eylem çerçevesi gözetilerek arkadaşlık, saygı, sorumluluk, vatan ve bayrak sevgisi, yardımlaşma gibi değerler üzerine yazıldı.</p>
+<h3>Gizlilik</h3><p>Adın yalnızca kullandığın bilgisayarda kalır, hiçbir yere gönderilmez. Rekor listesinde sadece sana özel takma ad, puan ve tarih görünür. Menüdeki <b>Verilerimi sil</b> ile kayıtlarını istediğin zaman silebilirsin.</p>
+<p style="color:var(--mute);font-size:12px">Yazı tipi: Atkinson Hyperlegible Next (Braille Institute, SIL Open Font License) · Sürüm 1.0 · 2026</p></div></div>
 <div id="rk" hidden><div class="box"><button id="rx" title="Kapat">✕</button><h2>🏆 Rekorlar</h2>
-<div class="tabs" id="tz"><button class="tb" data-z="normal">Normal</button><button class="tb" data-z="zor">🔥 Zor</button></div>
+<div class="tabs" id="tz"><button class="tb" data-z="normal">Normal</button><button class="tb" data-z="zor">🔥 Zor</button><button class="tb" data-z="uzman">🎯 Uzman</button></div>
 <div id="rst"></div>
 <ol class="rl" id="rkl"></ol>
-<div id="rkn" style="margin-top:10px">Puan = her doğru tuş 10 × seri çarpanı (süresinde bitirilen her bölüm bir sonrakini 0,5 artırır, en çok x3; Büyük finalde ayrıca 2 kat) + bölüm bitince kalan süre × 5 + hatasız bölüm için 100. Sıralama puana, eşitse doğruluğa göre. Listede son 1000 oyun durur. Gizlilik için listede adın yerine sana özel bir takma ad görünür; adın bu bilgisayardan hiç çıkmaz.</div>
+<div id="rkn" style="margin-top:10px">Puan = her doğru tuş 10 × seri çarpanı (süresinde bitirilen her bölüm bir sonrakini 0,5 artırır, en çok x3; Büyük finalde ayrıca 2 kat) + bölüm bitince kalan süre × 5 + hatasız bölüm için 100. Uzman: (doğru − 2 × hatalı) × 10, metni bitirirsen kalan her saniye +20. Sıralama puana, eşitse doğruluğa göre. Listede son 1000 oyun durur. Gizlilik için listede adın yerine sana özel bir takma ad görünür; adın bu bilgisayardan hiç çıkmaz.</div>
 </div></div>
 <script>
 /* ===== AYARLAR ===== */
@@ -200,7 +230,10 @@ var FN=["Ali'nin notu 100!", "(2*3)+61=?", "Işık %50 indirimli", "Saat 09:45't
 var FZ=["Ali'nin notu 100, Ayşe'nin 95!", "(2*3)+61=? Cevap: 67", "ogretmen@okul.k12.tr adresine yaz", "Fiyat: 15,50 € + %20 KDV", "C:\\Belgeler\\Ödev_5.txt", "[Işık] {Iğdır} | İzmir #1", "Şifre: Çğ_57!? değil $", "x=(a+b)*2; y=x/4", "Saat 14:30'da Ilgaz'a gidiyoruz.", "#KodlamaHaftası 2026 @okul", "Soru 3: (12-4)/2 = ?", "Öğle arası ~45 dk sürer.", "%100 doğru = 3 yıldız"];
 function mk(n,t,g,s,f){return{n:n,t:t,g:g,s:s,f:f||1}}
 function sayilar(){var a=[];for(var i=0;i<30;i++)a.push(String(Math.random()<.5?100+Math.floor(Math.random()*900):1000+Math.floor(Math.random()*9000)));return a}
-var LVS={
+/* ===== UZMAN MOD ===== */
+var US=60,UZ=["Mustafa Kemal, 19 Mayıs 1919'da Bandırma Vapuru ile Samsun'a ulaştı. Bu yolculuk, Kurtuluş Savaşı'nın ilk adımı oldu! Bugün o günü her yıl coşkuyla kutluyoruz. Tören saati 09:30; katılım %100 olsun. Sorularınız için toren@okul.tr adresine yazabilirsiniz. Peki sen bu önemli tarihi biliyor muydun?", "Gerçek arkadaş, zorlu günlerimizde yanımızda olandır. Ayşe sınavdan düşük not alınca Elif ona sarıldı ve birlikte çalışmayı önerdi. Her gün düzenli çalıştılar; bir ay sonra Ayşe'nin notu 45'ten 85'e yükseldi! Başarının sırrı neydi? Elbette dostluk, sabır ve emek. Sen de arkadaşına destek oldun mu?", "Bayrağımız, şehitlerimizin emanetidir. Ay ve yıldızı gördüğümüzde içimizde bir gurur oluşur. Pazartesi sabahları İstiklal Marşı'nı okurken hepimiz hazır ola geçeriz. Sınıf başkanı duyurdu: Tören 08:40'ta başlıyor, geç kalmayalım! Bayrağı katlarken özen göstermek de ona duyduğumuz saygının bir parçasıdır.", "Ramazan ayında komşumuz Fatma Teyze'ye iftar yemeği götürdük. Annem, paylaşılan sofranın bereketli olduğunu söyledi. Fatma Teyze çok mutlu oldu ve bize dualar etti. İyilik küçük bir tabak çorbayla bile başlayabilir! Sen bu hafta kime yardım edeceksin? Hemen listeni yap: kime, ne zaman, nasıl?", "Kütüphanemize 120 yeni kitap geldi. Kitapları raflara dizmek için gönüllü öğrenciler arandı; on iki kişi hemen el kaldırdı! Her kitaba bir numara verildi: roman_01, masal_02 gibi. Okumayı seven herkes haftada en az bir kitap alabilir. Kitap öneriniz varsa kutuphane@okul.tr adresine yazabilirsiniz.", "Saygı, karşımızdakini dinlemekle başlar. Öğretmenimiz konuşurken sözünü kesmeyiz; arkadaşımız anlatırken de sabırla bekleriz. Sınıf kuralımız çok açık: Önce dinle, sonra konuş! Farklı fikirler bizi zenginleştirir. Bugün kaç kez gerçekten dinledin? Akşam bunu düşünüp defterine küçük bir not yazabilirsin.", "Matematik dersinde kesirleri öğrendik. Bir pizzayı 8 eşit parçaya böldük ve 3 parçasını afiyetle yedik; geriye 5/8 kaldı. Öğretmenimiz tahtaya şunu yazdı: 3/8 + 5/8 = 1. Sınıfça çok şaşırdık! Ardından hep birlikte farklı örnekleri tartıştık. Sence 2/4 ile 1/2 aynı mıdır? Cevabını kontrol et.", "23 Nisan 1920'de Türkiye Büyük Millet Meclisi açıldı. Atatürk bu günü çocuklara armağan etti; dünyada bir ilk oldu! Bayramda okulumuzda gösteriler, şiirler ve halk oyunları vardı. Programın sloganı şuydu: Geleceğin büyükleri bugün sahnede! Sen bu bayramda hangi etkinlikte görev aldın, neler hissettin?", "Doğayı korumak hepimizin görevidir. Okul bahçesine 40 fidan diktik ve her sınıf bir ağaçtan sorumlu oldu. Fidanları haftada iki kez suluyoruz; kuraklıkta bu sayı artıyor. Ağaçlar büyüdükçe gölgesinde kitap okuyacağız! Çöpleri ayırmak da çok önemli: kağıt, plastik ve cam ayrı kutulara gider.", "Beden eğitimi dersinde voleybol oynadık. Takımımız ilk seti kaybetti ama kimse üzülmedi; birbirimizi alkışladık! Öğretmenimiz şöyle dedi: Kazanmak güzeldir, adil oynamak daha güzeldir. İkinci seti 25-23 aldık. Maç bitince rakip takımla tokalaştık. Centilmenlik sence neden bu kadar önemlidir?", "Kodlama dersinde ilk programımızı yazdık. Ekrana merhaba yazdıran küçük bir kod: yaz { Merhaba Dünya } şeklindeydi. Bir hata yapınca bilgisayar hemen uyardı! Öğretmenimiz hatanın öğrenmenin parçası olduğunu söyledi. Bir sonraki derste döngüleri öğreneceğiz. Sen ilk programına ne yazdırırdın?", "Dürüstlük, kimse görmezken de doğru olanı yapmaktır. Ali kantinde fazla para üstü aldığını fark etti ve hemen geri verdi. Kantin görevlisi ona içtenlikle teşekkür etti; Ali kendini çok mutlu hissetti! Küçük bir davranış büyük bir güven oluşturur. Dürüstlüğünün sınandığı bir an hatırlıyor musun?", "Çanakkale'de verilen mücadele, vatan sevgisinin en güzel örneklerinden biridir. Askerlerimiz büyük bir cesaretle bu toprakları korudu. Her yıl 18 Mart'ta onları saygıyla anıyoruz. Sınıfça bir anı defteri hazırladık; sayfaların %80'i mektuplardan oluştu! Sen de bir şehide mektup yazsan ona ne derdin?", "Ailemizle geçirdiğimiz zaman çok değerlidir. Pazar günü dedemle birlikte bahçede domates topladık. Dedem eskiden yaşadıklarını anlattı; çocukken okula 5 km yürüyerek gidermiş! Büyüklerimizi dinlemek bize çok şey öğretir. Bu hafta büyüklerinden birine şunu sor: Çocukken en çok neyi severdin?", "Sorumluluk sahibi olmak, işimizi zamanında yapmaktır. Ödevlerimizi bir plana göre yaparız: matematik pazartesi, Türkçe salı, fen çarşamba. Planımızı odamızın duvarına astık; böylece hiçbir şeyi unutmuyoruz! Akşam kontrol listesi: Çanta hazır mı? Defter tamam mı? Yarın için her şey yerinde mi?", "Sokağımızdaki kediler için küçük bir kulübe yaptık. Mahalledeki çocuklar karton, battaniye, su kabı getirdi. Kış gelince kediler sıcak bir yuvaya kavuştu! Hayvanlara şefkat göstermek merhametin bir parçasıdır. Sen de bir kap su koyabilirsin. Unutma: Küçük bir iyilik + sevgi = büyük bir mutluluk.", "Su, hayatın kaynağıdır ve israf edilmemelidir. Dişlerimizi fırçalarken musluğu kapatırsak her gün litrelerce su kazanırız. Okulumuzda bir yarışma başladı: Suyu en çok koruyan sınıf ödül alacak! Bizim sınıf su kullanımını %30 azalttı. Sen evde hangi damlayı kurtarabilirsin? Haydi, hemen bugün başla!", "29 Ekim 1923'te Cumhuriyet ilan edildi. Bu, milletimizin kendi kendini yönetme kararıydı! Okulumuz bayram için bayraklarla süslendi ve koridorlarda resim sergisi açıldı. Serginin adı Cumhuriyet_100 idi. Öğrenciler en güzel resmi seçmek için oy kullandı. Sence Cumhuriyet bize neler kazandırdı?", "Teşekkür etmek, kalbimizi güzelleştiren bir alışkanlıktır. Servis şoförümüz Hasan Amca'ya sınıfça bir kart hazırladık. Kartın üstüne şunu yazdık: Bizi her sabah güvenle taşıdığın için teşekkürler! Hasan Amca kartı okuyunca gülümsedi. Bugün sen kime teşekkür edeceksin? Bir cümle bile yeter.", "Sabır, emeğin meyvesini beklemeyi bilmektir. Murat bir yıl boyunca kemana çalıştı; önceleri sesler hiç güzel çıkmıyordu! Her gün 20 dakika çalıştı ve sonunda okul konserinde sahneye çıktı. Herkes onu alkışladı. Vazgeçmek kolaydır; devam etmek ise cesaret ister. Sen neye sabırla devam ediyorsun?", "Fen dersinde bitkilerin büyümesini inceledik. İki saksıya fasulye ektik: biri güneşte, diğeri karanlıkta duruyordu. Bir hafta sonra sonuç açıktı! Güneşteki bitki 12 cm uzadı, karanlıktaki ise solgun kaldı. Deney defterimize şunu yazdık: ışık + su = sağlıklı bitki. Sen hangi deneyi yapardın?", "Yardımlaşma, toplumu bir arada tutan güçtür. Okulumuzda kermes düzenledik; satılan kurabiyelerin geliri köy okuluna kitap olarak gönderildi! Toplam 85 kitap topladık ve kolilere özenle yerleştirdik. Kolinin üstüne kocaman bir kalp çizdik. Paylaşmak sence neden insanı bu kadar mutlu eder? Biraz düşün.", "Samsun, Karadeniz kıyısındaki en güzel şehirlerimizden biridir. Bandırma Vapuru Müzesi'ni gezdiğimizde tarih adeta gözümüzün önünde canlandı! Müzede o gün gemide olan yolcuların listesi de vardı. Gezi notlarımızı sınıf panosuna astık; başlığı Samsun_Gezisi oldu. Sen şehrinde hangi yeri gezmeyi önerirsin?", "Empati, kendimizi başkasının yerine koyabilmektir. Sınıfımıza yeni gelen Can ilk gün kimseyi tanımıyordu. Teneffüste onu oyuna çağırdık ve okulu gezdirdik! Can çok sevindi ve hemen kaynaştı. Bir gün sen de yeni bir yerde olabilirsin; nasıl karşılanmak isterdin? Bugün birine gülümse, gününü güzelleştir.", "Bilişim dersinde güvenli internet kurallarını konuştuk. Şifremizi kimseyle paylaşmayız; tanımadığımız kişilerden gelen bağlantılara tıklamayız! Güçlü bir şifre örneği tahtaya yazıldı: Kar_Tanesi+42. Şüpheli bir durumda hemen öğretmenimize ya da ailemize haber veririz. Şifreni en son ne zaman değiştirdin?"];
+var uT="",uP=0,uC=0,uE=0,uSp=[],uStart=0;
+var LVS={uzman:[mk("Uzman",["x"],1,US)],
 normal:[mk("Rakamlar",DIG,6,25),mk("Harfler",LET,8,35),mk("Shift simgeleri",SHF,6,35),mk("AltGr simgeleri",AGR,6,35),mk("Özel tuşlar",SPN,8,40),mk("Kısa yazılar",EXN,4,45),mk("Büyük final",FN,4,75,2)],
 zor:[Object.assign(mk("Sayılar",sayilar(),6,25),{gen:sayilar}),mk("Kelimeler",WRD,8,40),mk("Shift simgeleri",SHF,10,30),mk("AltGr simgeleri",AGR,8,30),mk("Özel tuşlar",SPZ,12,35),mk("Uzun yazılar",EXZ,5,50),mk("Büyük final",FZ,5,80,2)]};
 var MOD=T("Shift AltGraph Alt Control CapsLock Dead Meta OS Process Unidentified");
@@ -216,7 +249,7 @@ function load(){P=lsGet(SK+"|"+Z,null);if(!P||typeof P.b!=="number")P={b:0}}
 function hintFor(t){if(SP[t])return SP[t].h;var a=[];if(NM[t])a.push(NM[t]);else if(/[çğöşüÇĞÖŞÜ]/.test(t))a.push("Türkçe harf");if(HP[t])a.push(HP[t]);else if(t.length===1&&/[A-ZÇĞİÖŞÜ]/.test(t))a.push("Shift + harf");if(t.length>1&&t.indexOf(" ")>-1)a.push("Boşluk için boşluk tuşuna bas");if(t.length>1&&/[A-ZÇĞIİÖŞÜ]/.test(t))a.push("büyük harfe dikkat");return a.join(" · ")}
 function msg(a,b){$("skip").hidden=true;$("target").className="msg";$("target").textContent=a;$("hint").textContent=b}
 function show(id,on){$(id).hidden=!on}
-function setZ(z){Z=z;LV=LVS[z];$("goN").className="opt"+(z==="normal"?" sel":"");$("goZ").className="opt"+(z==="zor"?" sel":"");$("goN").setAttribute("aria-checked",z==="normal");$("goZ").setAttribute("aria-checked",z==="zor");$("lvm").textContent=z==="zor"?"🔥 Zor mod":"Normal mod";if(SK&&!G){load();lsSet("kb6:z|"+SK,z)}mkLevels();upd()}
+function setZ(z){Z=z;LV=LVS[z];[["goN","normal"],["goZ","zor"],["goU","uzman"]].forEach(function(x){$(x[0]).className="opt"+(z===x[1]?" sel":"");$(x[0]).setAttribute("aria-checked",z===x[1])});$("lvm").textContent=z==="zor"?"🔥 Zor mod":"Normal mod";document.documentElement.classList.toggle("uz",z==="uzman");if(phase==="ready")$("hint").textContent=readyTxt();if(SK&&!G){load();lsSet("kb6:z|"+SK,z)}mkLevels();upd()}
 function mkLevels(){var w=$("levels"),cur=phase==="between"?li+1:phase==="final"?-1:li;w.innerHTML="";
 LV.forEach(function(l,i){var r=res[i],e=document.createElement("span");
 if(i>0){var ln=document.createElement("i");ln.className="ln"+(res[i-1]&&res[i-1].s?" ok":"");w.appendChild(ln)}
@@ -226,24 +259,25 @@ else{e.className="pg nx";e.textContent=i+1;e.title=(i+1)+". "+l.n}
 w.appendChild(e)})}
 function kat(){return Math.min(3,1+seri*0.5)}
 function upd(){var t=hit+miss;$("time").textContent=tl;$("score").textContent=score;$("acc").textContent=t?"%"+Math.round(hit/t*100):"–";$("miss").textContent=miss+" hatalı";$("combo").textContent=seri>0?"🔥 Seri x"+kat()+" · "+seri+" bölüm üst üste":"";$("info").textContent=phase==="play"?LV[li].n+(LV[li].f>1?" 👾 · puanlar 2 kat":"")+" · "+done+"/"+LV[li].g+" tamam":"";$("best").textContent=P.b}
-function bar(){var f=$("fill"),p=LV[li].s*1000;f.style.width=Math.max(0,rem/p*100)+"%";var low=run&&rem<5000;f.className=low?"low":"";$("tmc").className="stat tm"+(low?" low":"")}
+function bar(){var f=$("fill"),p=(Z==="uzman"?US:LV[li].s)*1000;f.style.width=Math.max(0,rem/p*100)+"%";var low=run&&rem<5000;f.className=low?"low":"";$("tmc").className="stat tm"+(low?" low":"")}
 
 /* Süre: akıcı çubuk; pencere açılınca durur */
-function tick(){rem=Math.max(0,dl-performance.now());var s=Math.ceil(rem/1000);if(s!==tl){tl=s;$("time").textContent=tl}bar();if(rem<=0){raf=0;finish(false);return}raf=requestAnimationFrame(tick)}
-function startTimer(){stopTimer();dl=performance.now()+rem;raf=requestAnimationFrame(tick)}
+function tick(){rem=Math.max(0,dl-performance.now());var s=Math.ceil(rem/1000);if(s!==tl){tl=s;$("time").textContent=tl;$("ut").textContent=tl}bar();if(Z==="uzman"&&run)uzUpd();if(rem<=0){raf=0;if(Z==="uzman")uzEnd(false);else finish(false);return}raf=requestAnimationFrame(tick)}
+function startTimer(){if(Z==="uzman"&&!uStart)return;stopTimer();dl=performance.now()+rem;raf=requestAnimationFrame(tick)}
 function stopTimer(){if(raf){cancelAnimationFrame(raf);raf=0;rem=Math.max(0,dl-performance.now())}}
 
+function readyTxt(){return Z==="uzman"?"Tek metin, "+US+" saniye. Süre ilk tuşa bastığında başlar; geri silme yok.":LV.length+" seviye var; süre biterse sonraki seviyeye geçersin."}
 function ready(){phase="ready";li=0;score=hit=miss=combo=seri=done=0;res=[];rem=LV[0].s*1000;tl=LV[0].s;mkLevels();upd();bar();$("sum").innerHTML="";show("bar",false);show("rkend",false);
-msg("Hazır mısın?",LV.length+" seviye var; süre biterse sonraki seviyeye geçersin.");show("bdiff",true);$("gs").textContent="▶ Başla (Enter)";show("stt",false);show("lvc",false);show("go",false);show("chg2",false)}
+uzHide();msg("Hazır mısın?",readyTxt());show("bdiff",true);$("gs").textContent="▶ Başla (Enter)";show("stt",false);show("lvc",false);show("go",false);show("chg2",false)}
 function draw(){var el=$("target");$("skip").hidden=!(sp&&sp.o);if(sp){el.innerHTML='<div class="cap"><b>'+(sp.i||'<span class="sp"></span>')+'</b><span>'+sp.l+'</span></div>';return}var s="";for(var i=0;i<tok.length;i++){var ch=tok[i],c=ch===" "?'<span class="sp"></span>':ch.replace(/&/g,"&amp;").replace(/</g,"&lt;");s+='<span class="'+(i<pos?"d":i===pos?"n":"")+'">'+c+"</span>"}el.innerHTML=s;el.classList.toggle("long",tok.length>12);if(tok.length>1)$("hint").textContent=chHint(tok[pos])}
 function chHint(c){if(c===" ")return"Sıradaki: Boşluk tuşu";var h=[];if(NM[c])h.push(NM[c]);if(HP[c])h.push(HP[c]);else if(/[A-ZÇĞİÖŞÜI]/.test(c))h.push("Shift + "+(c==="I"?"ı":c==="İ"?"i":c.toLocaleLowerCase("tr")));return h.length?"Sıradaki: "+h.join(" · "):""}
 var bag=[];function fillBag(){var p=LV[li].t.slice();for(var i=p.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),x=p[i];p[i]=p[j];p[j]=x}if(p.length>1&&p[p.length-1]===tok){var y=p[0];p[0]=p[p.length-1];p[p.length-1]=y}bag=p}
 function next(){var p=LV[li].t,t;if(capsOn&&p.indexOf("§Caps")>-1)t="§Caps";else{if(!bag.length)fillBag();t=bag.pop()}tok=t;sp=SP[t]||null;pos=0;draw();var tg=$("target");tg.classList.remove("pop");void tg.offsetWidth;tg.classList.add("pop");if(t.length<2||SP[t])$("hint").textContent=hintFor(t)}
-function startLevel(){if(LV[li].gen)LV[li].t=LV[li].gen();bag=[];show("stt",true);show("lvc",true);if(document.activeElement)document.activeElement.blur();run=true;phase="play";done=0;m0=miss;h0=hit;rem=LV[li].s*1000;tl=LV[li].s;$("sum").innerHTML="";show("bar",true);show("rkend",false);show("bdiff",false);show("go",false);show("chg2",false);$("target").className="";tok="";next();mkLevels();upd();startTimer()}
+function startLevel(){uzHide();if(LV[li].gen)LV[li].t=LV[li].gen();bag=[];show("stt",true);show("lvc",true);if(document.activeElement)document.activeElement.blur();run=true;phase="play";done=0;m0=miss;h0=hit;rem=LV[li].s*1000;tl=LV[li].s;$("sum").innerHTML="";show("bar",true);show("rkend",false);show("bdiff",false);show("go",false);show("chg2",false);$("target").className="";tok="";next();mkLevels();upd();startTimer()}
 var cdT=0,cdN=0;function cdStop(){clearInterval(cdT);cdT=0}
 function cdStart(){cdStop();cdN=5;cdShow();cdT=setInterval(function(){if(modalOpen())return;cdN--;if(cdN<=0){cdStop();go();return}cdShow()},1000)}
 function cdShow(){$("go").textContent="Sonraki: "+LV[li+1].n+" · "+cdN+" sn (Enter)"}
-function go(z){cdStop();if(run)return;if(phase==="between"){li++;startLevel();return}if(z)setZ(z);li=0;score=hit=miss=combo=seri=0;res=[];startLevel()}
+function go(z){cdStop();if(run)return;if(phase==="between"){li++;startLevel();return}if(z)setZ(z);if(Z==="uzman"){uzStart();return}li=0;score=hit=miss=combo=seri=0;res=[];startLevel()}
 function finish(ok){run=false;stopTimer();var secs=ok?Math.ceil(rem/1000):0,lm=miss-m0,lh=hit-h0,la=(lm+lh)?Math.round(lh/(lm+lh)*100):100,st=ok?(la>=95?3:la>=85?2:1):0,last=li===LV.length-1,bn=ok?secs*5+(lm?0:100):0;score+=bn;
 res[li]={d:done,g:LV[li].g,m:lm,s:st,b:bn};seri=ok?seri+1:0;bar();
 if(!last){phase="between";msg(ok?"🎉 Seviye tamam!":"⏰ Süre bitti",(ok?"⭐".repeat(st)+" · Bonus +"+bn+" · ":"Hedef "+LV[li].g+" idi, "+done+" tanesini yapabildin · ")+lm+" hatalı");$("go").textContent="Sonraki: "+LV[li+1].n+" (Enter)";show("go",true);if(Z==="zor")cdStart()}
@@ -253,14 +287,33 @@ $("sum").innerHTML='<div class="sh">📋 Bölüm sonuçları</div>'+res.map(func
 show("bar",false);show("bdiff",true);$("gs").textContent="▶ Tekrar oyna (Enter)";show("chg2",true);addRec(score,ta)}
 upd();mkLevels()}
 function caps(e){capsOn=!!(e.getModifierState&&e.getModifierState("CapsLock"));$("caps").hidden=!capsOn}
-function modalOpen(){return !$("modal").hidden||!$("rk").hidden}
+function modalOpen(){return !$("modal").hidden||!$("rk").hidden||!$("hp").hidden||!$("ab").hidden}
+function uzHide(){$("stage").classList.remove("uzon");show("ubox",false);show("uh",false);show("ust",false);show("ubd",false)}
+function uzPick(){var mine=SK&&!G,seen=mine?lsGet(SK+"|ut",[]):[],c=[];for(var i=0;i<UZ.length;i++)if(seen.indexOf(i)<0)c.push(i);if(!c.length)for(i=0;i<UZ.length;i++)c.push(i);var x=c[Math.floor(Math.random()*c.length)];if(mine){seen.push(x);lsSet(SK+"|ut",seen.slice(-15))}return UZ[x]}
+function uzStart(){if(document.activeElement)document.activeElement.blur();uT=uzPick();uP=uC=uE=0;uStart=0;score=0;rem=US*1000;tl=US;run=true;phase="play";
+var b=$("utx");b.innerHTML="";uSp=[];for(var i=0;i<uT.length;i++){var e=document.createElement("span");e.textContent=uT[i];b.appendChild(e);uSp.push(e)}uSp[0].className="u-cur";$("ubox").scrollTop=0;
+$("stage").classList.add("uzon");["stt","lvc","bdiff","go","chg2","rkend","skip"].forEach(function(i){show(i,false)});$("sum").innerHTML="";show("ust",true);show("ubd",true);show("ubox",true);show("uh",true);show("bar",true);
+$("uh").textContent="İlk tuşa bastığında süre başlar. Yanlış basarsan düzeltme yok, devam et.";$("ut").textContent=US;bar();uzUpd()}
+function uzUpd(){var el=(US*1000-rem)/60000,t=uC+uE;$("uv").textContent=el>0.03?Math.round(uC/el):0;$("ua").textContent=t?"%"+Math.round(uC/t*100):"–";$("ue").textContent=uE}
+function uzKey(e){var k=e.key;if(MOD.indexOf(k)>-1)return;if(e.ctrlKey&&!e.altKey&&!(e.getModifierState&&e.getModifierState("AltGraph")))return;
+if(k.length>1){if(k==="Backspace"||k==="Enter"||k==="Tab"||k==="Delete")e.preventDefault();return}
+e.preventDefault();if(e.repeat)return;if(!uStart){uStart=1;startTimer()}
+var w=uT[uP],sp=uSp[uP];if(k===w){uC++;sp.className="u-ok"}else{uE++;sp.className="u-er";if(w===" ")sp.textContent="␣";var st=$("stage");st.classList.remove("shake");void st.offsetWidth;st.classList.add("shake")}
+uP++;if(uP>=uT.length){uzEnd(true);return}var c=uSp[uP];c.className="u-cur";var bx=$("ubox"),lh=c.offsetHeight||30;if(c.offsetTop-bx.scrollTop>lh*2.2)bx.scrollTop=c.offsetTop-lh*1.1;uzUpd()}
+function uzEnd(done){run=false;stopTimer();uStart=0;var secs=done?Math.ceil(rem/1000):0,el=Math.max(1/60,(US*1000-(done?rem:0))/60000),v=el>0?Math.round(uC/el):0,t=uC+uE,a=t?Math.round(uC/t*100):0,base=Math.max(0,(uC-2*uE)*10),bn=secs*20;
+score=base+bn;phase="final";uzUpd();var rec=score>P.b;if(rec){P.b=score;if(!G)lsSet(SK+"|"+Z,P)}
+$("stage").classList.remove("uzon");show("ubox",false);show("uh",false);show("bar",false);
+msg(rec&&!G?"🏆 Yeni rekorun!":done?"🎉 Metni bitirdin!":"⏰ Süre bitti",score+" puan · "+v+" vuruş/dk · %"+a+" doğruluk · "+uE+" hata");
+$("sum").innerHTML='<div class="sh">📋 Sonuç</div>'+[["Doğru karakter",uC+" × 10 = +"+uC*10],["Hatalı karakter",uE+" × 20 = −"+uE*20],["Yazılan",uP+" / "+uT.length+" karakter"],["Bitirme bonusu",done?secs+" sn × 20 = +"+bn:"metin bitmedi"]].map(function(x){return '<div class="sr"><span><b>'+x[0]+'</b></span><span class="sv">'+x[1]+"</span></div>"}).join("");
+show("bdiff",true);$("gs").textContent="▶ Tekrar oyna (Enter)";show("chg2",true);addRec(score,a)}
 
 window.addEventListener("keyup",function(e){caps(e);if(run&&(e.key==="Alt"||e.key==="AltGraph"||e.key==="F10"))e.preventDefault();
 if(run&&capsOn&&!modalOpen()&&LV[li].t.indexOf("§Caps")>-1&&tok!=="§Caps"){tok="§Caps";sp=SP[tok];pos=0;draw();$("hint").textContent=sp.h}});
 window.addEventListener("keydown",function(e){
 if(e.key==="CapsLock")capsOn=!capsOn;else caps(e);$("caps").hidden=!capsOn;$("touch").hidden=true;var k=e.key;
-if(modalOpen()){if(k==="Escape"){if(!$("rk").hidden)closeRk();else closeModal()}return}
+if(modalOpen()){if(k==="Escape"){if(!$("hp").hidden||!$("ab").hidden)closeInfo();else if(!$("rk").hidden)closeRk();else closeModal()}return}
 if(!run){if(k==="Enter"&&!e.repeat&&SK){e.preventDefault();go(phase==="between"?null:Z)}return}
+if(Z==="uzman"){uzKey(e);return}
 if(dSkip&&Date.now()-dSkip<1500&&(k===" "||k==="^"||k==="~")){dSkip=0;e.preventDefault();return}dSkip=0;
 var want=sp?sp.k:tok[pos],okk=k===want||!!(sp&&sp.c&&sp.c.indexOf(e.code)>-1);
 if(k==="Dead"&&!sp&&DK[want]&&e.code===DK[want]){okk=true;dSkip=Date.now()}
@@ -301,6 +354,11 @@ $("nm").addEventListener("input",function(){$("same").hidden=true;$("ok").hidden
 $("nm").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();e.stopPropagation();accept()}});
 $("go").onclick=function(){this.blur();go()};
 $("skip").onclick=function(){this.blur();if(run)next()};
+function openInfo(id){if(run)stopTimer();$(id).hidden=false}
+function closeInfo(){$("hp").hidden=true;$("ab").hidden=true;if(run)startTimer()}
+$("hpl").onclick=function(){openInfo("hp")};$("abl").onclick=function(){openInfo("ab")};
+[].forEach.call(document.querySelectorAll(".cx"),function(b){b.onclick=closeInfo});["hp","ab"].forEach(function(i){$(i).onclick=function(e){if(e.target===this)closeInfo()}});
+$("goU").onclick=function(){this.blur();setZ("uzman")};
 $("goN").onclick=function(){this.blur();setZ("normal")};$("goZ").onclick=function(){this.blur();setZ("zor")};$("gs").onclick=function(){this.blur();go(Z)};
 
 /* ===== REKORLAR ===== */
@@ -337,7 +395,7 @@ if(!confirm("Bu bilgisayardaki ve rekor listesindeki bütün kayıtların siline
 var my=lsGet(SK+"|ids",[]),ids={};my.forEach(function(m){ids[m.id]=1});
 lsSet(KQ,lsGet(KQ,[]).filter(function(r){return !ids[r.id]}));lsSet(KR,localList().filter(function(r){return !ids[r.id]}));
 if(API&&my.length)lsSet(KD,lsGet(KD,[]).concat(my).slice(-500));
-try{["|ids","|normal","|zor"].forEach(function(k){localStorage.removeItem(SK+k)});localStorage.removeItem("kb6:z|"+SK)}catch(e){}
+try{["|ids","|normal","|zor","|uzman","|ut"].forEach(function(k){localStorage.removeItem(SK+k)});localStorage.removeItem("kb6:z|"+SK)}catch(e){}
 if(LK){var PL=lsGet(LK,[]);if(Array.isArray(PL)){PL=PL.filter(function(p){return p.k!==SK});if(PL.length)lsSet(LK,PL);else try{localStorage.removeItem(LK)}catch(e){}}}
 logout();var e=$("err");e.style.color="var(--ok)";e.textContent="🗑️ Kayıtların bu bilgisayardan silindi."+(API?" Ortak listeden siliniyor…":"");
 if(API)sync().then(function(ok){if(!$("modal").hidden)e.textContent=ok?"🗑️ Kayıtların her yerden silindi.":"🗑️ Bu bilgisayardan silindi. İnternet gelince ortak listeden de silinecek."})}
@@ -348,7 +406,7 @@ document.addEventListener("click",function(){$("um").hidden=true;$("whob").setAt
 var act=Date.now(),ckT=0;["keydown","pointerdown"].forEach(function(t){window.addEventListener(t,function(){act=Date.now();if(SK&&act-ckT>15000){ckT=act;ckSave()}},true)});
 setInterval(function(){if(SK&&!run&&Date.now()-act>300000)logout()},10000);
 function find(l){if(!lastRec)return 0;for(var i=0;i<l.length;i++)if(l[i].id===lastRec.id)return i+1;return 0}
-function view(z){return RK.filter(function(r){return (r.z==="zor"?"zor":"normal")===z})}
+function view(z){return RK.filter(function(r){return (r.z==="zor"||r.z==="uzman"?r.z:"normal")===z})}
 function md(i){return i===0?"🥇":i===1?"🥈":i===2?"🥉":(i+1)+"."}
 function dt(t){if(!t)return"";var d=new Date(t);return d.toLocaleDateString("tr-TR",{day:"numeric",month:"short"})+" "+d.toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"})}
 var MY={};function myIds(){MY={};if(SK&&!G)lsGet(SK+"|ids",[]).forEach(function(m){MY[m.id]=1})}
