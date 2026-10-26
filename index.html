@@ -22,6 +22,7 @@ main{max-width:760px;margin:0 auto;padding:14px 16px 32px}
 .top>div{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
 h1{margin:0;font-size:26px}
 .sm{font-size:13px;padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.ib svg{color:var(--ink)}
 .ib{width:40px;height:40px;padding:0;border-radius:10px;border:1px solid var(--line);background:var(--card);font-size:19px;cursor:pointer;display:grid;place-items:center}.ib:hover{border-color:var(--acc)}
 .vd{width:1px;height:28px;background:var(--line);margin:0 4px}
 .ub{display:flex;align-items:center;gap:8px;height:40px;padding:0 6px 0 8px;border:0;border-radius:10px;background:none;color:var(--ink);cursor:pointer;text-align:left}.ub:hover,.ub[aria-expanded="true"]{background:color-mix(in srgb,var(--line) 60%,transparent)}
@@ -39,7 +40,8 @@ h1{margin:0;font-size:26px}
 .ln{flex:1 1 0;max-width:34px;min-width:6px;height:4px;border-radius:2px;background:var(--line)}.ln.ok{background:var(--ok)}
 .pg{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:15px}
 .pg.ok{background:var(--ok);color:#fff}
-.pg.to{background:color-mix(in srgb,var(--acc) 22%,var(--card));color:var(--acc);font-size:14px}
+.pg.to{background:var(--line);color:var(--mute);font-size:14px;filter:grayscale(1)}
+.lvm{font-size:12px;font-weight:600;color:var(--mute);margin:-4px 0 4px 2px}
 .pg.nx{border:2px dashed var(--line);color:var(--mute)}
 .pg.on{width:auto;height:auto;border-radius:12px;background:var(--acc);color:#fff;padding:6px 14px;display:flex;gap:8px;align-items:center;box-shadow:0 3px 0 color-mix(in srgb,var(--acc) 60%,#000)}
 .pg.on b{font-size:24px;line-height:1}.pg.on span{font-size:15px}
@@ -54,6 +56,8 @@ h1{margin:0;font-size:26px}
 #caps{background:color-mix(in srgb,var(--bad) 18%,var(--card));color:var(--bad)}
 #touch{background:color-mix(in srgb,var(--acc) 15%,var(--card))}
 [hidden]{display:none!important}
+#target.pop{animation:pop .14s ease-out}@keyframes pop{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#target.pop{animation:none}}
 #target{font-size:clamp(44px,12vw,88px);font-weight:700;letter-spacing:.06em;min-height:1.3em;overflow-wrap:anywhere;margin:6px 0}
 #target .d{color:var(--ok)}#target .n{border-bottom:5px solid var(--acc)}
 #target.msg{font-size:clamp(24px,6vw,38px);letter-spacing:0;line-height:1.3;overflow-wrap:normal;padding:14px 0}
@@ -99,14 +103,14 @@ small{color:var(--mute);line-height:1.5;display:block}
 </head>
 <body>
 <main>
-<div class="top"><h1>⌨️ Klavye Ustası</h1><div><button class="ib" id="rkb" title="Rekor listesi" aria-label="Rekor listesi">🏆</button><button class="ib" id="chg" title="Kişi değiştir" aria-label="Kişi değiştir" hidden>👥</button><i class="vd" id="vd" hidden></i><div class="um"><button class="ub" id="whob" aria-label="Kullanıcı menüsü" aria-haspopup="true" hidden><span id="who"></span><svg class="cv" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6l4.5 4.5L12.5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div id="um" hidden><button id="out">🚪 Çıkış (kişi değiştir)</button><button id="del">🗑️ Verilerimi sil</button></div></div></div></div>
+<div class="top"><h1>⌨️ Klavye Ustası</h1><div><button class="ib" id="rkb" title="Rekor listesi" aria-label="Rekor listesi">🏆</button><button class="ib" id="chg" title="Kişi değiştir" aria-label="Kişi değiştir" hidden><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="7" cy="6.5" r="3" fill="currentColor"/><path d="M2 15.5a5 5 0 0 1 10 0z" fill="currentColor"/><circle cx="17" cy="12.5" r="3" fill="currentColor"/><path d="M12 21.5a5 5 0 0 1 10 0z" fill="currentColor"/><g fill="none" stroke="var(--acc)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 3.5c3.2-.4 6 1 7.3 3.8"/><path d="M20.4 4.6l-.5 2.9-2.8-.8"/><path d="M11.5 20.5c-3.2.4-6-1-7.3-3.8"/><path d="M3.6 19.4l.5-2.9 2.8.8"/></g></svg></button><i class="vd" id="vd" hidden></i><div class="um"><button class="ub" id="whob" aria-label="Kullanıcı menüsü" aria-haspopup="true" hidden><span id="who"></span><svg class="cv" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6l4.5 4.5L12.5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div id="um" hidden><button id="out">🚪 Çıkış (kişi değiştir)</button><button id="del">🗑️ Verilerimi sil</button></div></div></div></div>
 <div class="stats" id="stt">
 <div class="stat tm" id="tmc"><b id="time">0</b><span>saniye kaldı</span><em></em></div>
-<div class="stat"><b id="score">0</b><span>toplam puan</span><em id="mode"></em></div>
-<div class="stat"><b id="acc">100%</b><span>doğruluk</span><em id="miss">0 hatalı</em></div>
+<div class="stat"><b id="score">0</b><span>toplam puan</span><em></em></div>
+<div class="stat"><b id="acc">–</b><span>doğruluk</span><em id="miss">0 hatalı</em></div>
 <div class="stat"><b id="best">0</b><span>en iyi turun</span><em></em></div>
 </div>
-<div class="card" id="lvc"><div class="levels" id="levels"></div></div>
+<div class="card" id="lvc"><div id="lvm" class="lvm"></div><div class="levels" id="levels"></div></div>
 <div class="card" id="stage">
 <div id="info"></div>
 <div id="bar"><i id="fill"></i></div>
@@ -204,15 +208,15 @@ function load(){P=lsGet(SK+"|"+Z,null);if(!P||typeof P.b!=="number")P={b:0}}
 function hintFor(t){if(SP[t])return SP[t].h;var a=[];if(NM[t])a.push(NM[t]);else if(/[çğöşüÇĞÖŞÜ]/.test(t))a.push("Türkçe harf");if(HP[t])a.push(HP[t]);else if(t.length===1&&/[A-ZÇĞİÖŞÜ]/.test(t))a.push("Shift + harf");if(t.length>1&&t.indexOf(" ")>-1)a.push("Boşluk için boşluk tuşuna bas");if(t.length>1&&/[A-ZÇĞIİÖŞÜ]/.test(t))a.push("büyük harfe dikkat");return a.join(" · ")}
 function msg(a,b){$("target").className="msg";$("target").textContent=a;$("hint").textContent=b}
 function show(id,on){$(id).hidden=!on}
-function setZ(z){Z=z;LV=LVS[z];$("goN").className="opt"+(z==="normal"?" sel":"");$("goZ").className="opt"+(z==="zor"?" sel":"");$("goN").setAttribute("aria-checked",z==="normal");$("goZ").setAttribute("aria-checked",z==="zor");$("mode").textContent=z==="zor"?"🔥 Zor":"Normal";$("mode").style.color="var(--mute)";if(SK&&!G){load();lsSet("kb6:z|"+SK,z)}mkLevels();upd()}
+function setZ(z){Z=z;LV=LVS[z];$("goN").className="opt"+(z==="normal"?" sel":"");$("goZ").className="opt"+(z==="zor"?" sel":"");$("goN").setAttribute("aria-checked",z==="normal");$("goZ").setAttribute("aria-checked",z==="zor");$("lvm").textContent=z==="zor"?"🔥 Zor mod":"Normal mod";if(SK&&!G){load();lsSet("kb6:z|"+SK,z)}mkLevels();upd()}
 function mkLevels(){var w=$("levels"),cur=phase==="between"?li+1:phase==="final"?-1:li;w.innerHTML="";
 LV.forEach(function(l,i){var r=res[i],e=document.createElement("span");
-if(i>0){var ln=document.createElement("i");ln.className="ln"+(res[i-1]?" ok":"");w.appendChild(ln)}
+if(i>0){var ln=document.createElement("i");ln.className="ln"+(res[i-1]&&res[i-1].s?" ok":"");w.appendChild(ln)}
 if(i===cur){e.className="pg on";var b=document.createElement("b"),t=document.createElement("span");b.textContent=i+1;t.textContent=l.n;e.appendChild(b);e.appendChild(t)}
 else if(r){e.className="pg "+(r.s?"ok":"to");e.textContent=r.s?"✓":"⏰";e.title=(i+1)+". "+l.n+(r.s?" tamamlandı":" süre bitti")}
 else{e.className="pg nx";e.textContent=i+1;e.title=(i+1)+". "+l.n}
 w.appendChild(e)})}
-function upd(){var t=hit+miss;$("time").textContent=tl;$("score").textContent=score;$("acc").textContent=(t?Math.round(hit/t*100):100)+"%";$("miss").textContent=miss+" hatalı";$("combo").textContent=combo>=10?"🔥 Seri x"+Math.min(5,1+((combo/10)|0)):"";$("info").textContent=phase==="play"?LV[li].n+" · "+done+"/"+LV[li].g+" tamam":"";$("best").textContent=P.b}
+function upd(){var t=hit+miss;$("time").textContent=tl;$("score").textContent=score;$("acc").textContent=t?"%"+Math.round(hit/t*100):"–";$("miss").textContent=miss+" hatalı";$("combo").textContent=combo>=10?"🔥 Seri x"+Math.min(5,1+((combo/10)|0)):"";$("info").textContent=phase==="play"?LV[li].n+" · "+done+"/"+LV[li].g+" tamam":"";$("best").textContent=P.b}
 function bar(){var f=$("fill"),p=LV[li].s*1000;f.style.width=Math.max(0,rem/p*100)+"%";var low=run&&rem<5000;f.className=low?"low":"";$("tmc").className="stat tm"+(low?" low":"")}
 
 /* Süre: akıcı çubuk; pencere açılınca durur */
@@ -223,7 +227,7 @@ function stopTimer(){if(raf){cancelAnimationFrame(raf);raf=0;rem=Math.max(0,dl-p
 function ready(){phase="ready";li=0;score=hit=miss=combo=done=0;res=[];rem=LV[0].s*1000;tl=LV[0].s;mkLevels();upd();bar();$("sum").innerHTML="";show("bar",false);show("rkend",false);
 msg("Hazır mısın?",LV.length+" seviye var; süre biterse sonraki seviyeye geçersin.");show("bdiff",true);$("gs").textContent="▶ Başla (Enter)";show("stt",false);show("lvc",false);show("go",false);show("chg2",false)}
 function draw(){var el=$("target");if(sp){el.innerHTML='<div class="cap"><b>'+(sp.i||'<span class="sp"></span>')+'</b><span>'+sp.l+'</span></div>';return}var s="";for(var i=0;i<tok.length;i++){var ch=tok[i],c=ch===" "?'<span class="sp"></span>':ch.replace(/&/g,"&amp;").replace(/</g,"&lt;");s+='<span class="'+(i<pos?"d":i===pos?"n":"")+'">'+c+"</span>"}el.innerHTML=s}
-function next(){var p=LV[li].t,t;if(capsOn&&p.indexOf("§Caps")>-1)t="§Caps";else do{t=p[Math.floor(Math.random()*p.length)]}while(t===tok&&p.length>1);tok=t;sp=SP[t]||null;pos=0;draw();$("hint").textContent=hintFor(t)}
+function next(){var p=LV[li].t,t;if(capsOn&&p.indexOf("§Caps")>-1)t="§Caps";else do{t=p[Math.floor(Math.random()*p.length)]}while(t===tok&&p.length>1);tok=t;sp=SP[t]||null;pos=0;draw();var tg=$("target");tg.classList.remove("pop");void tg.offsetWidth;tg.classList.add("pop");$("hint").textContent=hintFor(t)}
 function startLevel(){show("stt",true);show("lvc",true);if(document.activeElement)document.activeElement.blur();run=true;phase="play";done=0;m0=miss;h0=hit;rem=LV[li].s*1000;tl=LV[li].s;$("sum").innerHTML="";show("bar",true);show("rkend",false);show("bdiff",false);show("go",false);show("chg2",false);$("target").className="";tok="";next();mkLevels();upd();startTimer()}
 var cdT=0,cdN=0;function cdStop(){clearInterval(cdT);cdT=0}
 function cdStart(){cdStop();cdN=5;cdShow();cdT=setInterval(function(){if(modalOpen())return;cdN--;if(cdN<=0){cdStop();go();return}cdShow()},1000)}
