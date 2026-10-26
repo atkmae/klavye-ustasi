@@ -67,7 +67,8 @@ h1{margin:0;font-size:26px}
 .cap b{font-size:60px;line-height:1.1}.cap span{font-size:18px;font-weight:600;color:var(--mute)}
 .cap .sp{width:2.2em;height:.3em;border-width:4px;margin:.25em 0}
 #hint{color:var(--mute);min-height:24px;font-size:15px}
-#sum{text-align:left;max-width:460px;margin:8px auto 0;font-size:12px;line-height:1.5}
+.sh{font-weight:700;font-size:13px;border-top:1px solid var(--line);padding-top:12px;margin-top:14px;margin-bottom:4px}.sr{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:4px 0;border-bottom:1px dashed var(--line)}.sr b{color:var(--acc);margin-right:4px}.sr .sv{color:var(--mute)}
+#sum{text-align:left;max-width:520px;margin:8px auto 0;font-size:12px;line-height:1.5}
 .shake{animation:sh .25s}@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 .flash{animation:fl .3s}@keyframes fl{from{background:color-mix(in srgb,var(--ok) 25%,var(--card))}}
 .opts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}.opt{min-width:180px;padding:12px 18px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;font-weight:700;cursor:pointer}.opt small{display:block;font-size:12px;font-weight:400;color:var(--mute);line-height:1.3}.opt.sel{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 12%,var(--card))}.opt.sel::before{content:"✓ ";color:var(--acc)}
@@ -118,7 +119,7 @@ small{color:var(--mute);line-height:1.5;display:block}
 <div id="combo"></div>
 <div id="touch" hidden>📱 Bu oyun gerçek bir klavyeyle oynanır. Tablete klavye takabilir ya da bilgisayardan açabilirsin.</div>
 <div id="caps" hidden>⚠️ Caps Lock açık! Kapatmak için Caps Lock tuşuna bas.</div>
-<div id="target"></div><div id="hint"></div>
+<div id="target"></div><div id="hint"></div><button class="start alt" id="skip" hidden style="margin-top:6px;font-size:13px;padding:6px 14px">⏭ Bu tuş klavyemde yok, geç</button>
 <div id="bdiff"><div class="opts" role="radiogroup" aria-label="Zorluk"><button class="opt" id="goN" role="radio">Normal<small>klavyeyi yeni tanıyanlar</small></button><button class="opt" id="goZ" role="radio">🔥 Zor<small>daha çok tuş, kelimeler</small></button></div><div class="btns"><button class="start" id="gs">▶ Başla (Enter)</button></div></div>
 <div class="btns"><button class="start" id="go" hidden></button><button class="start alt" id="chg2" hidden>👥 Kişi değiştir</button></div>
 <div id="rkend" hidden><div id="rkt"></div><ol class="rl sm2" id="rkl2"></ol></div>
@@ -139,7 +140,7 @@ small{color:var(--mute);line-height:1.5;display:block}
 <div class="tabs" id="tz"><button class="tb" data-z="normal">Normal</button><button class="tb" data-z="zor">🔥 Zor</button></div>
 <div id="rst"></div>
 <ol class="rl" id="rkl"></ol>
-<div id="rkn" style="margin-top:10px">Puan = doğru tuşlar (seri çarpanı en çok x5) + seviye bitince kalan süre × 5 + hatasız seviye için 100. Sıralama puana, eşitse doğruluğa göre. Listede son 1000 oyun durur. Gizlilik için listede adın yerine sana özel bir takma ad görünür; adın bu bilgisayardan hiç çıkmaz.</div>
+<div id="rkn" style="margin-top:10px">Puan = her doğru tuş 10 × seri çarpanı (süresinde bitirilen her bölüm bir sonrakini 0,5 artırır, en çok x3; Büyük finalde ayrıca 2 kat) + bölüm bitince kalan süre × 5 + hatasız bölüm için 100. Sıralama puana, eşitse doğruluğa göre. Listede son 1000 oyun durur. Gizlilik için listede adın yerine sana özel bir takma ad görünür; adın bu bilgisayardan hiç çıkmaz.</div>
 </div></div>
 <script>
 /* ===== AYARLAR ===== */
@@ -162,14 +163,14 @@ var SP={"§Boşluk":{k:" ",i:"",l:"Boşluk (Space)",h:"Klavyenin en uzun tuşu"}
 "§Shift":{k:"Shift",i:"⇧",l:"Shift",h:"Büyük harf ve simgeler için; sol veya sağ olur"},
 "§Esc":{k:"Escape",i:"Esc",l:"Esc",h:"Sol üst köşe"},
 "§Delete":{k:"Delete",i:"Del",l:"Delete (Del)",h:"Sağda, ok tuşlarının üstünde; İMLECİN SAĞINDAKİ harfi siler"},
-"§Home":{k:"Home",i:"⇱",l:"Home",h:"Satır başına gider (dizüstünde Fn ile olabilir)"},
-"§End":{k:"End",i:"⇲",l:"End",h:"Satır sonuna gider (dizüstünde Fn ile olabilir)"},
+"§Home":{k:"Home",o:1,i:"⇱",l:"Home",h:"Satır başına gider (dizüstünde Fn ile olabilir)"},
+"§End":{k:"End",o:1,i:"⇲",l:"End",h:"Satır sonuna gider (dizüstünde Fn ile olabilir)"},
 "§Sol":{k:"ArrowLeft",i:"←",l:"Sol ok",h:"Ok tuşları sağ altta"},
 "§Sağ":{k:"ArrowRight",i:"→",l:"Sağ ok",h:"Ok tuşları sağ altta"},
 "§Yukarı":{k:"ArrowUp",i:"↑",l:"Yukarı ok",h:"Ok tuşları sağ altta"},
 "§Aşağı":{k:"ArrowDown",i:"↓",l:"Aşağı ok",h:"Ok tuşları sağ altta"},
-"§PgUp":{k:"PageUp",i:"⇞",l:"Page Up",h:"Sayfayı bir ekran yukarı kaydırır (dizüstünde Fn + yukarı ok olabilir)"},
-"§PgDn":{k:"PageDown",i:"⇟",l:"Page Down",h:"Sayfayı bir ekran aşağı kaydırır (dizüstünde Fn + aşağı ok olabilir)"},
+"§PgUp":{k:"PageUp",o:1,i:"⇞",l:"Page Up",h:"Sayfayı bir ekran yukarı kaydırır (dizüstünde Fn + yukarı ok olabilir)"},
+"§PgDn":{k:"PageDown",o:1,i:"⇟",l:"Page Down",h:"Sayfayı bir ekran aşağı kaydırır (dizüstünde Fn + aşağı ok olabilir)"},
 "§Caps":{k:"CapsLock",i:"⇪",l:"Caps Lock",h:"Sol tarafta; büyük harf kilidi. Açık kalırsa bir daha basıp kapat"},
 "§Ctrl":{k:"Control",c:["ControlLeft","ControlRight"],i:"Ctrl",l:"Ctrl",h:"Sol altta; kısayollar için (Ctrl + C kopyala)"},
 "§Alt":{k:"Alt",c:["AltLeft"],i:"Alt",l:"Alt",h:"Boşluk tuşunun solunda"},
@@ -189,28 +190,29 @@ var SHF=T("! ' ^ + % & / ( ) = ? _ > : ;");
 var AGR=T("@ € { [ ] } \\ | # $ ~");
 /* Özel tuşlar: sık kullanılanlar (Backspace, Delete, Boşluk, Enter, Tab, Ctrl) daha sık çıkar */
 var SPN=T("§Silme §Silme §Silme §Delete §Delete §Delete §Boşluk §Boşluk §Boşluk §Enter §Enter §Enter §Tab §Tab §Tab §Ctrl §Ctrl §Ctrl §Shift §Shift §Esc §Esc §Sol §Sağ §Yukarı §Aşağı §Home §End §Caps §Alt §AltGr");
-var SPZ=SPN.concat(T("§PgUp §PgDn §Insert"));
+var SPZ=SPN.concat(T("§PgUp §PgDn"));
 var EXN=["Evet!","Neden?","%25","a_b","{x}","10 TL","3*4=12","A&B","Ali'nin","5/2","(1+2)","[ok]","a@b","Işık!","#1","50 lira"];
 var EXZ=["50-10=40","(3+4)*2","a@b.com","100-25=75","[1] [2]","5/2=2,5","C:\\Pardus","12/04/2026","%50 indirim","x=(a+b)/2","Iğdır'ın ılık yazı","ad_soyad@okul.tr","{a:1, b:2}","15,50 €","İzmir'e #1","Ne? Evet!"];
 /* Büyük final: bölüm sonu canavarı. Uzun yazılar, daha uzun süre, 2 kat puan */
 var FN=["Ali'nin notu 100!", "(2*3)+61=?", "Işık %50 indirimli", "Saat 09:45'te gel.", "Çağrı & Ömer", "5+5=10, değil mi?", "İzmir'e 3 gün kaldı", "Ödev: sayfa 42-43", "Kalem 15 TL", "Doğru mu? Evet!", "Not: 85/100", "Ilık çay (2 bardak)", "Iğdır ve Isparta", "Göl, dağ, ağaç...", "Şu an saat 10:15", "a@b.com yaz!"];
 var FZ=["Ali'nin notu 100, Ayşe'nin 95!", "(2*3)+61=? Cevap: 67", "ogretmen@okul.k12.tr adresine yaz", "Fiyat: 15,50 € + %20 KDV", "C:\\Belgeler\\Ödev_5.txt", "[Işık] {Iğdır} | İzmir #1", "Şifre: Çğ_57!? değil $", "x=(a+b)*2; y=x/4", "Saat 14:30'da Ilgaz'a gidiyoruz.", "#KodlamaHaftası 2026 @okul", "Soru 3: (12-4)/2 = ?", "Öğle arası ~45 dk sürer.", "%100 doğru = 3 yıldız"];
 function mk(n,t,g,s,f){return{n:n,t:t,g:g,s:s,f:f||1}}
+function sayilar(){var a=[];for(var i=0;i<30;i++)a.push(String(Math.random()<.5?100+Math.floor(Math.random()*900):1000+Math.floor(Math.random()*9000)));return a}
 var LVS={
 normal:[mk("Rakamlar",DIG,6,25),mk("Harfler",LET,8,35),mk("Shift simgeleri",SHF,6,35),mk("AltGr simgeleri",AGR,6,35),mk("Özel tuşlar",SPN,8,40),mk("Kısa yazılar",EXN,4,45),mk("Büyük final",FN,4,75,2)],
-zor:[mk("Rakamlar",DIG,10,20),mk("Kelimeler",WRD,8,40),mk("Shift simgeleri",SHF,10,30),mk("AltGr simgeleri",AGR,8,30),mk("Özel tuşlar",SPZ,12,35),mk("Uzun yazılar",EXZ,5,50),mk("Büyük final",FZ,5,80,2)]};
+zor:[Object.assign(mk("Sayılar",sayilar(),6,25),{gen:sayilar}),mk("Kelimeler",WRD,8,40),mk("Shift simgeleri",SHF,10,30),mk("AltGr simgeleri",AGR,8,30),mk("Özel tuşlar",SPZ,12,35),mk("Uzun yazılar",EXZ,5,50),mk("Büyük final",FZ,5,80,2)]};
 var MOD=T("Shift AltGraph Alt Control CapsLock Dead Meta OS Process Unidentified");
 var SPK=Object.keys(SP).map(function(x){return SP[x].k});
 var DK={"^":"Digit3","~":"BracketRight"},dSkip=0;
 
 /* ===== DURUM ===== */
-var Z="normal",LV=LVS.normal,capsOn=false,who="",cls="",li=0,run=false,phase="ready",score=0,hit=0,miss=0,combo=0,done=0,m0=0,h0=0,tok="",sp=null,pos=0,res=[],P={b:0},SK="",gSel=0,nick="",G=false;
+var Z="normal",LV=LVS.normal,capsOn=false,who="",cls="",li=0,run=false,phase="ready",score=0,hit=0,miss=0,combo=0,seri=0,done=0,m0=0,h0=0,tok="",sp=null,pos=0,res=[],P={b:0},SK="",gSel=0,nick="",G=false;
 var rem=0,dl=0,raf=0,tl=0;
 function lsGet(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}}
 function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function load(){P=lsGet(SK+"|"+Z,null);if(!P||typeof P.b!=="number")P={b:0}}
 function hintFor(t){if(SP[t])return SP[t].h;var a=[];if(NM[t])a.push(NM[t]);else if(/[çğöşüÇĞÖŞÜ]/.test(t))a.push("Türkçe harf");if(HP[t])a.push(HP[t]);else if(t.length===1&&/[A-ZÇĞİÖŞÜ]/.test(t))a.push("Shift + harf");if(t.length>1&&t.indexOf(" ")>-1)a.push("Boşluk için boşluk tuşuna bas");if(t.length>1&&/[A-ZÇĞIİÖŞÜ]/.test(t))a.push("büyük harfe dikkat");return a.join(" · ")}
-function msg(a,b){$("target").className="msg";$("target").textContent=a;$("hint").textContent=b}
+function msg(a,b){$("skip").hidden=true;$("target").className="msg";$("target").textContent=a;$("hint").textContent=b}
 function show(id,on){$(id).hidden=!on}
 function setZ(z){Z=z;LV=LVS[z];$("goN").className="opt"+(z==="normal"?" sel":"");$("goZ").className="opt"+(z==="zor"?" sel":"");$("goN").setAttribute("aria-checked",z==="normal");$("goZ").setAttribute("aria-checked",z==="zor");$("lvm").textContent=z==="zor"?"🔥 Zor mod":"Normal mod";if(SK&&!G){load();lsSet("kb6:z|"+SK,z)}mkLevels();upd()}
 function mkLevels(){var w=$("levels"),cur=phase==="between"?li+1:phase==="final"?-1:li;w.innerHTML="";
@@ -220,7 +222,8 @@ if(i===cur){e.className="pg on";var b=document.createElement("b"),t=document.cre
 else if(r){e.className="pg "+(r.s?"ok":"to");e.textContent=r.s?"✓":"⏰";e.title=(i+1)+". "+l.n+(r.s?" tamamlandı":" süre bitti")}
 else{e.className="pg nx";e.textContent=i+1;e.title=(i+1)+". "+l.n}
 w.appendChild(e)})}
-function upd(){var t=hit+miss;$("time").textContent=tl;$("score").textContent=score;$("acc").textContent=t?"%"+Math.round(hit/t*100):"–";$("miss").textContent=miss+" hatalı";$("combo").textContent=combo>=10?"🔥 Seri x"+Math.min(5,1+((combo/10)|0)):"";$("info").textContent=phase==="play"?LV[li].n+(LV[li].f>1?" 👾 · puanlar 2 kat":"")+" · "+done+"/"+LV[li].g+" tamam":"";$("best").textContent=P.b}
+function kat(){return Math.min(3,1+seri*0.5)}
+function upd(){var t=hit+miss;$("time").textContent=tl;$("score").textContent=score;$("acc").textContent=t?"%"+Math.round(hit/t*100):"–";$("miss").textContent=miss+" hatalı";$("combo").textContent=seri>0?"🔥 Seri x"+kat()+" · "+seri+" bölüm üst üste":"";$("info").textContent=phase==="play"?LV[li].n+(LV[li].f>1?" 👾 · puanlar 2 kat":"")+" · "+done+"/"+LV[li].g+" tamam":"";$("best").textContent=P.b}
 function bar(){var f=$("fill"),p=LV[li].s*1000;f.style.width=Math.max(0,rem/p*100)+"%";var low=run&&rem<5000;f.className=low?"low":"";$("tmc").className="stat tm"+(low?" low":"")}
 
 /* Süre: akıcı çubuk; pencere açılınca durur */
@@ -228,22 +231,23 @@ function tick(){rem=Math.max(0,dl-performance.now());var s=Math.ceil(rem/1000);i
 function startTimer(){stopTimer();dl=performance.now()+rem;raf=requestAnimationFrame(tick)}
 function stopTimer(){if(raf){cancelAnimationFrame(raf);raf=0;rem=Math.max(0,dl-performance.now())}}
 
-function ready(){phase="ready";li=0;score=hit=miss=combo=done=0;res=[];rem=LV[0].s*1000;tl=LV[0].s;mkLevels();upd();bar();$("sum").innerHTML="";show("bar",false);show("rkend",false);
+function ready(){phase="ready";li=0;score=hit=miss=combo=seri=done=0;res=[];rem=LV[0].s*1000;tl=LV[0].s;mkLevels();upd();bar();$("sum").innerHTML="";show("bar",false);show("rkend",false);
 msg("Hazır mısın?",LV.length+" seviye var; süre biterse sonraki seviyeye geçersin.");show("bdiff",true);$("gs").textContent="▶ Başla (Enter)";show("stt",false);show("lvc",false);show("go",false);show("chg2",false)}
-function draw(){var el=$("target");if(sp){el.innerHTML='<div class="cap"><b>'+(sp.i||'<span class="sp"></span>')+'</b><span>'+sp.l+'</span></div>';return}var s="";for(var i=0;i<tok.length;i++){var ch=tok[i],c=ch===" "?'<span class="sp"></span>':ch.replace(/&/g,"&amp;").replace(/</g,"&lt;");s+='<span class="'+(i<pos?"d":i===pos?"n":"")+'">'+c+"</span>"}el.innerHTML=s;el.classList.toggle("long",tok.length>12);if(tok.length>1)$("hint").textContent=chHint(tok[pos])}
+function draw(){var el=$("target");$("skip").hidden=!(sp&&sp.o);if(sp){el.innerHTML='<div class="cap"><b>'+(sp.i||'<span class="sp"></span>')+'</b><span>'+sp.l+'</span></div>';return}var s="";for(var i=0;i<tok.length;i++){var ch=tok[i],c=ch===" "?'<span class="sp"></span>':ch.replace(/&/g,"&amp;").replace(/</g,"&lt;");s+='<span class="'+(i<pos?"d":i===pos?"n":"")+'">'+c+"</span>"}el.innerHTML=s;el.classList.toggle("long",tok.length>12);if(tok.length>1)$("hint").textContent=chHint(tok[pos])}
 function chHint(c){if(c===" ")return"Sıradaki: Boşluk tuşu";var h=[];if(NM[c])h.push(NM[c]);if(HP[c])h.push(HP[c]);else if(/[A-ZÇĞİÖŞÜI]/.test(c))h.push("Shift + "+(c==="I"?"ı":c==="İ"?"i":c.toLocaleLowerCase("tr")));return h.length?"Sıradaki: "+h.join(" · "):""}
-function next(){var p=LV[li].t,t;if(capsOn&&p.indexOf("§Caps")>-1)t="§Caps";else do{t=p[Math.floor(Math.random()*p.length)]}while(t===tok&&p.length>1);tok=t;sp=SP[t]||null;pos=0;draw();var tg=$("target");tg.classList.remove("pop");void tg.offsetWidth;tg.classList.add("pop");if(t.length<2||SP[t])$("hint").textContent=hintFor(t)}
-function startLevel(){show("stt",true);show("lvc",true);if(document.activeElement)document.activeElement.blur();run=true;phase="play";done=0;m0=miss;h0=hit;rem=LV[li].s*1000;tl=LV[li].s;$("sum").innerHTML="";show("bar",true);show("rkend",false);show("bdiff",false);show("go",false);show("chg2",false);$("target").className="";tok="";next();mkLevels();upd();startTimer()}
+var bag=[];function fillBag(){var p=LV[li].t.slice();for(var i=p.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),x=p[i];p[i]=p[j];p[j]=x}if(p.length>1&&p[p.length-1]===tok){var y=p[0];p[0]=p[p.length-1];p[p.length-1]=y}bag=p}
+function next(){var p=LV[li].t,t;if(capsOn&&p.indexOf("§Caps")>-1)t="§Caps";else{if(!bag.length)fillBag();t=bag.pop()}tok=t;sp=SP[t]||null;pos=0;draw();var tg=$("target");tg.classList.remove("pop");void tg.offsetWidth;tg.classList.add("pop");if(t.length<2||SP[t])$("hint").textContent=hintFor(t)}
+function startLevel(){if(LV[li].gen)LV[li].t=LV[li].gen();bag=[];show("stt",true);show("lvc",true);if(document.activeElement)document.activeElement.blur();run=true;phase="play";done=0;m0=miss;h0=hit;rem=LV[li].s*1000;tl=LV[li].s;$("sum").innerHTML="";show("bar",true);show("rkend",false);show("bdiff",false);show("go",false);show("chg2",false);$("target").className="";tok="";next();mkLevels();upd();startTimer()}
 var cdT=0,cdN=0;function cdStop(){clearInterval(cdT);cdT=0}
 function cdStart(){cdStop();cdN=5;cdShow();cdT=setInterval(function(){if(modalOpen())return;cdN--;if(cdN<=0){cdStop();go();return}cdShow()},1000)}
 function cdShow(){$("go").textContent="Sonraki: "+LV[li+1].n+" · "+cdN+" sn (Enter)"}
-function go(z){cdStop();if(run)return;if(phase==="between"){li++;startLevel();return}if(z)setZ(z);li=0;score=hit=miss=combo=0;res=[];startLevel()}
+function go(z){cdStop();if(run)return;if(phase==="between"){li++;startLevel();return}if(z)setZ(z);li=0;score=hit=miss=combo=seri=0;res=[];startLevel()}
 function finish(ok){run=false;stopTimer();var secs=ok?Math.ceil(rem/1000):0,lm=miss-m0,lh=hit-h0,la=(lm+lh)?Math.round(lh/(lm+lh)*100):100,st=ok?(la>=95?3:la>=85?2:1):0,last=li===LV.length-1,bn=ok?secs*5+(lm?0:100):0;score+=bn;
-res[li]={d:done,g:LV[li].g,m:lm,s:st,b:bn};bar();
+res[li]={d:done,g:LV[li].g,m:lm,s:st,b:bn};seri=ok?seri+1:0;bar();
 if(!last){phase="between";msg(ok?"🎉 Seviye tamam!":"⏰ Süre bitti",(ok?"⭐".repeat(st)+" · Bonus +"+bn+" · ":"Hedef "+LV[li].g+" idi, "+done+" tanesini yapabildin · ")+lm+" hatalı");$("go").textContent="Sonraki: "+LV[li+1].n+" (Enter)";show("go",true);if(Z==="zor")cdStart()}
 else{phase="final";var t=hit+miss,ta=t?Math.round(hit/t*100):100,rec=score>P.b;if(rec){P.b=score;if(!G)lsSet(SK+"|"+Z,P)}
 msg(rec&&!G?"🏆 Yeni rekorun!":"🏁 Tur bitti!",score+" puan · %"+ta+" doğruluk · "+miss+" hatalı");
-$("sum").innerHTML=res.map(function(r,i){return (i+1)+". "+LV[i].n+": "+r.d+"/"+r.g+" · "+r.m+" hatalı · +"+r.b+" bonus "+(r.s?"⭐".repeat(r.s):"⏰")}).join("<br>");
+$("sum").innerHTML='<div class="sh">📋 Bölüm sonuçları</div>'+res.map(function(r,i){return '<div class="sr"><span><b>Bölüm '+(i+1)+'</b> '+LV[i].n+'</span><span class="sv">'+r.d+"/"+r.g+" · "+r.m+" hatalı · +"+r.b+" bonus "+(r.s?"⭐".repeat(r.s):"⏰")+"</span></div>"}).join("");
 show("bar",false);show("bdiff",true);$("gs").textContent="▶ Tekrar oyna (Enter)";show("chg2",true);addRec(score,ta)}
 upd();mkLevels()}
 function caps(e){capsOn=!!(e.getModifierState&&e.getModifierState("CapsLock"));$("caps").hidden=!capsOn}
@@ -262,7 +266,7 @@ if(!okk){if(MOD.indexOf(k)>-1)return;if(k.length>1&&SPK.indexOf(k)<0)return}
 if(e.ctrlKey&&!e.altKey&&!okk&&!(e.getModifierState&&e.getModifierState("AltGraph")))return;
 e.preventDefault();if(e.repeat)return;
 var st=$("stage");
-if(okk){hit++;combo++;score+=10*Math.min(5,1+((combo/10)|0))*LV[li].f;
+if(okk){hit++;combo++;score+=Math.round(10*kat()*LV[li].f);
 if(sp||pos+1>=tok.length){score+=(sp?5:tok.length*2)*LV[li].f;done++;st.classList.remove("flash");void st.offsetWidth;st.classList.add("flash");if(done>=LV[li].g){upd();finish(true);return}next()}else{pos++;draw()}}
 else{miss++;combo=0;st.classList.remove("shake");void st.offsetWidth;st.classList.add("shake")}
 upd()});
@@ -281,6 +285,7 @@ $("modal").onclick=function(e){if(e.target===this)closeModal()};
 $("nm").addEventListener("input",function(){var n=this.value.replace(/\s+/g," ").trim(),k=n?takma(n):"";$("np").textContent=n?"Rekor listesindeki adın: "+emo(k)+" "+k:""});
 $("nm").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();e.stopPropagation();accept()}});
 $("go").onclick=function(){this.blur();go()};
+$("skip").onclick=function(){this.blur();if(run)next()};
 $("goN").onclick=function(){this.blur();setZ("normal")};$("goZ").onclick=function(){this.blur();setZ("zor")};$("gs").onclick=function(){this.blur();go(Z)};
 
 /* ===== REKORLAR ===== */
