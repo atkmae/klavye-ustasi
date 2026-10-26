@@ -98,6 +98,7 @@ small{color:var(--mute);line-height:1.5;display:block}
 .rl li .o{display:block;font-size:.78em;color:var(--mute);font-weight:400;padding-left:2.9em}
 .rl.sm2{max-height:230px;max-width:500px;margin:4px auto 0;border:1px solid var(--line);border-radius:10px;text-align:left}.rl.sm2 li{font-size:13px;padding:5px 8px}
 #rkt{font-size:14px;margin-top:12px;font-weight:600}#rkn,#rst{color:var(--mute);font-size:12px;line-height:1.5}
+.pl{display:flex;flex-direction:column;gap:6px;max-height:40vh;overflow-y:auto}.pl button{display:flex;justify-content:space-between;align-items:center;gap:8px;text-align:left;font-size:15px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}.pl button:hover{border-color:var(--acc)}.pl button small{color:var(--mute);font-size:12px}.pl button.nw{border-style:dashed;color:var(--acc);font-weight:600}
 #err{color:var(--bad);min-height:20px;margin-top:8px}
 @media (max-height:700px){main{padding-top:8px}.stats{margin-bottom:8px}.stat b{font-size:20px}.card{padding:10px;margin-bottom:8px}#target{font-size:clamp(40px,10vw,70px)}.cap b{font-size:46px}.cap{padding:8px 30px}}
 @media (max-width:520px){.stats{grid-template-columns:repeat(2,1fr)}h1{font-size:22px}#sb{grid-template-columns:repeat(5,1fr)}}
@@ -132,6 +133,7 @@ small{color:var(--mute);line-height:1.5;display:block}
 <h2 id="h2">Merhaba! 👋</h2><div style="color:var(--mute)">Başlamadan önce kendini tanıt.</div>
 <label for="nm">Adın <span style="font-size:12px">(sadece bu bilgisayarda kalır, rekor listesine yazılmaz)</span></label><input id="nm" maxlength="30" autocomplete="off">
 <div id="np" style="margin-top:8px;font-size:14px;color:var(--mute);min-height:20px"></div>
+<div id="same" hidden><div id="samet" style="font-size:14px;line-height:1.5;margin:10px 0 6px"></div><div id="samel" class="pl"></div></div>
 <div id="err"></div><button class="start" id="ok" style="width:100%">Tamam</button>
 <button class="start alt" id="guest" style="width:100%;margin-top:14px">👤 Misafir olarak oyna</button><small style="text-align:center;font-size:12px;margin-top:4px">Aldığın puan rekor listesine kaydedilmez.</small>
 
@@ -263,7 +265,7 @@ if(dSkip&&Date.now()-dSkip<1500&&(k===" "||k==="^"||k==="~")){dSkip=0;e.preventD
 var want=sp?sp.k:tok[pos],okk=k===want||!!(sp&&sp.c&&sp.c.indexOf(e.code)>-1);
 if(k==="Dead"&&!sp&&DK[want]&&e.code===DK[want]){okk=true;dSkip=Date.now()}
 if(!okk){if(MOD.indexOf(k)>-1)return;if(k.length>1&&SPK.indexOf(k)<0)return}
-if(e.ctrlKey&&!e.altKey&&!okk&&!(e.getModifierState&&e.getModifierState("AltGraph")))return;
+if(e.ctrlKey&&!e.altKey&&!okk&&k.length===1&&!(e.getModifierState&&e.getModifierState("AltGraph")))return;
 e.preventDefault();if(e.repeat)return;
 var st=$("stage");
 if(okk){hit++;combo++;score+=Math.round(10*kat()*LV[li].f);
@@ -273,16 +275,29 @@ upd()});
 
 /* ===== KİŞİ SEÇİMİ ===== */
 function mkChips(){}
-function openModal(){if(run)stopTimer();gSel=0;mkChips();$("nm").value="";$("h2").textContent=SK?"Sıradaki kişi 👋":"Merhaba! 👋";$("x").hidden=!SK;$("np").textContent="";$("modal").hidden=false;setTimeout(function(){$("nm").focus()},50)}
+function openModal(){if(run)stopTimer();gSel=0;mkChips();$("nm").value="";$("h2").textContent=SK?"Sıradaki kişi 👋":"Merhaba! 👋";$("x").hidden=!SK;$("np").textContent="";$("same").hidden=true;$("ok").hidden=false;$("modal").hidden=false;setTimeout(function(){$("nm").focus()},50)}
 function closeModal(){if(!SK)return;$("modal").hidden=true;if(run)startTimer()}
 function ckGet(){try{var m=document.cookie.match(/(?:^|; )kbs=([^;]*)/);return m?JSON.parse(decodeURIComponent(m[1])):null}catch(e){return null}}
-function ckSave(){if(!SK)return;try{document.cookie="kbs="+encodeURIComponent(JSON.stringify({f:who.split(" ")[0],k:SK,n:nick,g:G?1:0,t:Date.now()}))+";path=/;SameSite=Lax"}catch(e){}}
+function ckSave(){if(!SK)return;try{document.cookie="kbs="+encodeURIComponent(JSON.stringify({f:who.split(" ")[0],k:SK,n:nick,l:LK,g:G?1:0,t:Date.now()}))+";path=/;SameSite=Lax"}catch(e){}}
 function ckDel(){try{document.cookie="kbs=;path=/;max-age=0;SameSite=Lax"}catch(e){}}
+/* Aynı bilgisayarda aynı ad: o ada ait kişiler listelenir, öğrenci kendini seçer ya da yeni kişi olur.
+   Liste anahtarı addan özetlenir; ad bilgisayarda düz yazı olarak tutulmaz. */
+var LK="";
+function keyOf(n){return "kb6:"+fnv(n.toLocaleLowerCase("tr")+"|"+TUZ).toString(36)+fnv("ku|"+TUZ+n.toLocaleLowerCase("tr")).toString(36)}
+function listKey(n){return "kb6:ad|"+fnv("ad|"+TUZ+"|"+n.toLocaleLowerCase("tr")).toString(36)}
+function hasData(k){return lsGet(k+"|ids",[]).length||lsGet(k+"|normal",null)||lsGet(k+"|zor",null)}
+function people(n){var L=lsGet(listKey(n),[]);if(!Array.isArray(L))L=[];if(!L.length&&hasData(keyOf(n))){L=[{k:keyOf(n),n:takma(n),t:0}];lsSet(listKey(n),L)}return L}
+function newPerson(n){var L=people(n),p;if(!L.length)p={k:keyOf(n),n:takma(n),t:Date.now()};else{var used={},i=0;L.forEach(function(x){used[x.n]=1});do{var seed=n+"|"+Date.now()+"|"+(i++)+"|"+Math.random();p={k:"kb6:"+fnv(seed+TUZ).toString(36)+fnv("ku|"+seed).toString(36),n:takma(seed),t:Date.now()}}while(used[p.n]&&i<50)}L.push(p);lsSet(listKey(n),L);return p}
+function login(n,p){run=false;stopTimer();who=n;cls="";nick=p.n;SK=p.k;LK=listKey(n);G=false;$("same").hidden=true;$("ok").hidden=false;$("err").textContent="";$("modal").hidden=true;var f=n.split(" ")[0];f=f.charAt(0).toLocaleUpperCase("tr")+f.slice(1);who=f+n.slice(f.length);hdr(f,emo(nick)+" "+nick,"");setZ(lsGet("kb6:z|"+SK,"normal"));ready();ckSave()}
 function accept(){var n=$("nm").value.replace(/\s+/g," ").trim();$("err").style.color="";if(!n){$("err").textContent="Lütfen adını yaz.";return}
-run=false;stopTimer();who=n;cls="";nick=takma(n);SK="kb6:"+fnv(n.toLocaleLowerCase("tr")+"|"+TUZ).toString(36)+fnv("ku|"+TUZ+n.toLocaleLowerCase("tr")).toString(36);G=false;$("err").textContent="";$("modal").hidden=true;hdr(n.split(" ")[0],emo(nick)+" "+nick,"");setZ(lsGet("kb6:z|"+SK,"normal"));ready();ckSave()}
-$("ok").onclick=accept;$("chg2").onclick=change;$("x").onclick=closeModal;
+var L=people(n);if(!L.length){login(n,newPerson(n));return}
+$("samet").textContent="Bu bilgisayarda “"+n+"” adıyla daha önce oynanmış. Hangisi sensin?";var box=$("samel");box.innerHTML="";
+L.forEach(function(p){var b=document.createElement("button"),a=document.createElement("span"),m=document.createElement("small"),bn=lsGet(p.k+"|normal",{b:0}).b||0,bz=lsGet(p.k+"|zor",{b:0}).b||0;a.textContent=emo(p.n)+" "+p.n;m.textContent="en iyi: "+Math.max(bn,bz)+" puan";b.appendChild(a);b.appendChild(m);b.onclick=function(){login(n,p)};box.appendChild(b)});
+var nb=document.createElement("button");nb.className="nw";nb.textContent="➕ Hayır, ben başka biriyim (bana yeni ad ver)";nb.onclick=function(){login(n,newPerson(n))};box.appendChild(nb);
+$("same").hidden=false;$("ok").hidden=true;$("err").textContent="";$("np").textContent=""}
+$("ok").onclick=accept;
 $("modal").onclick=function(e){if(e.target===this)closeModal()};
-$("nm").addEventListener("input",function(){var n=this.value.replace(/\s+/g," ").trim(),k=n?takma(n):"";$("np").textContent=n?"Rekor listesindeki adın: "+emo(k)+" "+k:""});
+$("nm").addEventListener("input",function(){$("same").hidden=true;$("ok").hidden=false;var n=this.value.replace(/\s+/g," ").trim(),L=n?people(n):[],k=n&&!L.length?takma(n):"";$("np").textContent=!n?"":L.length?"Bu adla bu bilgisayarda "+L.length+" kişi kayıtlı; Tamam deyince kendini seçeceksin.":"Rekor listesindeki adın: "+emo(k)+" "+k});
 $("nm").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();e.stopPropagation();accept()}});
 $("go").onclick=function(){this.blur();go()};
 $("skip").onclick=function(){this.blur();if(run)next()};
@@ -315,7 +330,7 @@ $("rkt").textContent=(online?"🌐 ":"💻 ")+(online?"Ortak listede ":"Bu bilgi
 fill($("rkl2"),all,lastRec)})}
 function rnd(){try{var a=new Uint32Array(2);crypto.getRandomValues(a);return a[0].toString(36)+a[1].toString(36)}catch(e){return Math.random().toString(36).slice(2)}}
 /* Çıkış: ekranda önceki öğrenciden iz kalmaz */
-function logout(){cdStop();ckDel();run=false;stopTimer();who="";cls="";nick="";SK="";G=false;lastRec=null;P={b:0};$("who").textContent="";$("vd").hidden=true;$("chg").hidden=true;$("whob").hidden=true;$("um").hidden=true;$("rk").hidden=true;setZ("normal");ready();openModal()}
+function logout(){LK="";cdStop();ckDel();run=false;stopTimer();who="";cls="";nick="";SK="";G=false;lastRec=null;P={b:0};$("who").textContent="";$("vd").hidden=true;$("chg").hidden=true;$("whob").hidden=true;$("um").hidden=true;$("rk").hidden=true;setZ("normal");ready();openModal()}
 /* Verilerimi sil: bu bilgisayardaki ve ortak listedeki tüm kayıtları */
 function delMe(){if(!SK||G)return;$("um").hidden=true;var wasRun=run;if(run)stopTimer();
 if(!confirm("Bu bilgisayardaki ve rekor listesindeki bütün kayıtların silinecek. Bu geri alınamaz. Emin misin?")){if(wasRun)startTimer();return}
@@ -323,14 +338,15 @@ var my=lsGet(SK+"|ids",[]),ids={};my.forEach(function(m){ids[m.id]=1});
 lsSet(KQ,lsGet(KQ,[]).filter(function(r){return !ids[r.id]}));lsSet(KR,localList().filter(function(r){return !ids[r.id]}));
 if(API&&my.length)lsSet(KD,lsGet(KD,[]).concat(my).slice(-500));
 try{["|ids","|normal","|zor"].forEach(function(k){localStorage.removeItem(SK+k)});localStorage.removeItem("kb6:z|"+SK)}catch(e){}
+if(LK){var PL=lsGet(LK,[]);if(Array.isArray(PL)){PL=PL.filter(function(p){return p.k!==SK});if(PL.length)lsSet(LK,PL);else try{localStorage.removeItem(LK)}catch(e){}}}
 logout();var e=$("err");e.style.color="var(--ok)";e.textContent="🗑️ Kayıtların bu bilgisayardan silindi."+(API?" Ortak listeden siliniyor…":"");
 if(API)sync().then(function(ok){if(!$("modal").hidden)e.textContent=ok?"🗑️ Kayıtların her yerden silindi.":"🗑️ Bu bilgisayardan silindi. İnternet gelince ortak listeden de silinecek."})}
 $("whob").onclick=function(ev){ev.stopPropagation();$("um").hidden=!$("um").hidden;this.setAttribute("aria-expanded",!$("um").hidden)};
 $("out").onclick=change;$("chg").onclick=change;$("guest").onclick=guest;$("del").onclick=delMe;
 document.addEventListener("click",function(){$("um").hidden=true;$("whob").setAttribute("aria-expanded","false")});
-/* 3 dakika kimse dokunmazsa otomatik çıkış */
+/* 5 dakika kimse dokunmazsa otomatik çıkış */
 var act=Date.now(),ckT=0;["keydown","pointerdown"].forEach(function(t){window.addEventListener(t,function(){act=Date.now();if(SK&&act-ckT>15000){ckT=act;ckSave()}},true)});
-setInterval(function(){if(SK&&!run&&Date.now()-act>180000)logout()},10000);
+setInterval(function(){if(SK&&!run&&Date.now()-act>300000)logout()},10000);
 function find(l){if(!lastRec)return 0;for(var i=0;i<l.length;i++)if(l[i].id===lastRec.id)return i+1;return 0}
 function view(z){return RK.filter(function(r){return (r.z==="zor"?"zor":"normal")===z})}
 function md(i){return i===0?"🥇":i===1?"🥈":i===2?"🥉":(i+1)+"."}
@@ -356,7 +372,7 @@ $("rkb").onclick=openRk;$("rx").onclick=closeRk;$("rk").onclick=function(e){if(e
 try{if(matchMedia("(pointer:coarse)").matches&&!matchMedia("(pointer:fine)").matches)$("touch").hidden=false}catch(e){}
 function bas(x){return x.replace(/\s+/g," ").trim().split(" ").map(function(w){return w.charAt(0).toLocaleUpperCase("tr")+w.slice(1).toLocaleLowerCase("tr")}).join(" ")}
 setZ("normal");ready();
-(function(){var c=ckGet();if(c&&c.k&&Date.now()-c.t<180000){if(c.g){guest();return}$("modal").hidden=true;who=c.f;nick=c.n;SK=c.k;G=false;hdr(c.f,emo(nick)+" "+nick,"");setZ(lsGet("kb6:z|"+SK,"normal"));ready();ckSave()}else{ckDel();openModal()}})();
+(function(){var c=ckGet();if(c&&c.k&&Date.now()-c.t<300000){if(c.g){guest();return}$("modal").hidden=true;who=c.f;nick=c.n;SK=c.k;LK=c.l||"";G=false;hdr(c.f,emo(nick)+" "+nick,"");setZ(lsGet("kb6:z|"+SK,"normal"));ready();ckSave()}else{ckDel();openModal()}})();
 if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(function(){});
 </script>
 </body>
