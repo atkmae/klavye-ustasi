@@ -120,7 +120,7 @@ small{color:var(--mute);line-height:1.5;display:block}
 <div id="combo"></div>
 <div id="touch" hidden>📱 Bu oyun gerçek bir klavyeyle oynanır. Tablete klavye takabilir ya da bilgisayardan açabilirsin.</div>
 <div id="caps" hidden>⚠️ Caps Lock açık! Kapatmak için Caps Lock tuşuna bas.</div>
-<div id="target"></div><div id="hint"></div><button class="start alt" id="skip" hidden style="margin-top:6px;font-size:13px;padding:6px 14px">⏭ Bu tuş klavyemde yok, geç</button>
+<div id="target"></div><div id="hint"></div><button class="start alt" id="skip" hidden style="margin-top:6px;font-size:13px;padding:6px 14px">⏭ Pas</button>
 <div id="bdiff"><div class="opts" role="radiogroup" aria-label="Zorluk"><button class="opt" id="goN" role="radio">Normal<small>klavyeyi yeni tanıyanlar</small></button><button class="opt" id="goZ" role="radio">🔥 Zor<small>daha çok tuş, kelimeler</small></button></div><div class="btns"><button class="start" id="gs">▶ Başla (Enter)</button></div></div>
 <div class="btns"><button class="start" id="go" hidden></button><button class="start alt" id="chg2" hidden>👥 Kişi değiştir</button></div>
 <div id="rkend" hidden><div id="rkt"></div><ol class="rl sm2" id="rkl2"></ol></div>
@@ -293,11 +293,11 @@ function accept(){var n=$("nm").value.replace(/\s+/g," ").trim();$("err").style.
 var L=people(n);if(!L.length){login(n,newPerson(n));return}
 $("samet").textContent="Bu bilgisayarda “"+n+"” adıyla daha önce oynanmış. Hangisi sensin?";var box=$("samel");box.innerHTML="";
 L.forEach(function(p){var b=document.createElement("button"),a=document.createElement("span"),m=document.createElement("small"),bn=lsGet(p.k+"|normal",{b:0}).b||0,bz=lsGet(p.k+"|zor",{b:0}).b||0;a.textContent=emo(p.n)+" "+p.n;m.textContent="en iyi: "+Math.max(bn,bz)+" puan";b.appendChild(a);b.appendChild(m);b.onclick=function(){login(n,p)};box.appendChild(b)});
-var nb=document.createElement("button");nb.className="nw";nb.textContent="➕ Hayır, ben başka biriyim (bana yeni ad ver)";nb.onclick=function(){login(n,newPerson(n))};box.appendChild(nb);
+var nb=document.createElement("button");nb.className="nw";nb.textContent="➕ Hayır, başka biriyim (yeni oyuncu)";nb.onclick=function(){login(n,newPerson(n))};box.appendChild(nb);
 $("same").hidden=false;$("ok").hidden=true;$("err").textContent="";$("np").textContent=""}
 $("ok").onclick=accept;
 $("modal").onclick=function(e){if(e.target===this)closeModal()};
-$("nm").addEventListener("input",function(){$("same").hidden=true;$("ok").hidden=false;var n=this.value.replace(/\s+/g," ").trim(),L=n?people(n):[],k=n&&!L.length?takma(n):"";$("np").textContent=!n?"":L.length?"Bu adla bu bilgisayarda "+L.length+" kişi kayıtlı; Tamam deyince kendini seçeceksin.":"Rekor listesindeki adın: "+emo(k)+" "+k});
+$("nm").addEventListener("input",function(){$("same").hidden=true;$("ok").hidden=false;var n=this.value.replace(/\s+/g," ").trim(),L=n?people(n):[],k=n&&!L.length?takma(n):"";$("np").textContent=n&&!L.length?"Rekor listesindeki adın: "+emo(k)+" "+k:""});
 $("nm").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();e.stopPropagation();accept()}});
 $("go").onclick=function(){this.blur();go()};
 $("skip").onclick=function(){this.blur();if(run)next()};
